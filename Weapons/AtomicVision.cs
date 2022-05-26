@@ -37,7 +37,11 @@ namespace Projekt
         }
         public override string Print()
         {
-            return this.GetType() +"\nAtack Multiplicator: " + atackMultiplication + "\n"+ base.Print();
+            return this.PrintName() +"\nAtack Multiplicator: " + atackMultiplication + "\n"+ base.Print();
+        }
+        public override string PrintName()
+        {
+            return "Atomic Vision";
         }
     }
 }

@@ -121,7 +121,11 @@ namespace Projekt
         }
         public override string Print()
         {
-            return this.GetType() + "\nBonus EQ damage: " + bonusDamage + "\n" + base.Print();
+            return this.PrintName() + "\nBonus EQ damage: " + bonusDamage + "\n" + base.Print();
+        }
+        public override string PrintName()
+        {
+            return "Tetronik";
         }
     }
 }

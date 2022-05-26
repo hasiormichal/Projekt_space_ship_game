@@ -69,7 +69,11 @@ namespace Projekt
         }
         public override string Print()
         {
-            return this.GetType() + "\nMagazin Size: " + maxMagazinSize + " ==> " + "Rockets: " + magazinSize +"\n"+  base.Print();
+            return this.PrintName() + "\nMagazin Size: " + maxMagazinSize + " ==> " + "Rockets: " + magazinSize +"\n"+  base.Print();
+        }
+        public override string PrintName()
+        {
+            return "Rocket Launcher";
         }
     }
 }

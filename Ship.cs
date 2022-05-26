@@ -89,7 +89,7 @@ namespace Projekt
             foreach(Weapon MyWeapon in weapons)
             {
                 MyWeapon.DamageShip(TargetShip, MyWeapon.GetAtack(TargetShip));
-                result += MyWeapon.ToString() + " deal: " + MyWeapon.GetAtack(TargetShip) + " dmg. \n";
+                result += MyWeapon.PrintName() + " deal: " + MyWeapon.GetAtack(TargetShip) + " dmg. \n";
                 totalDamage += MyWeapon.GetAtack(TargetShip);
 
                 //rocket launcher lost 3 rocket per atack

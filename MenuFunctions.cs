@@ -1023,7 +1023,183 @@ namespace Projekt
         }
         public void MenuUpgradeWeapon(Player player)
         {
-            //TODO
+            string[] MainMenu = { "exit","weapon 1", "weapon 2",
+                "weapon 3","weapon 4","weapon 5"};
+            bool ExitFlag = true; 
+            string result;
+            PrintMenu menu1 = new PrintMenu();
+            string[] ShortList = new string[1 + player.MyShip.Hull.MaximumNumberOfWeapons];
+            Array.Copy(MainMenu, ShortList, 1 + player.MyShip.Hull.MaximumNumberOfWeapons);
+            menu1._menu = ShortList;
+
+            List<Weapon> TempList = new List<Weapon>();
+            TempList = player.Localization.WeaponList;
+
+            while (ExitFlag)
+            {
+                for (int i = 0; i < 1 + player.MyShip.Hull.MaximumNumberOfWeapons; i++)
+                {
+                    Console.WriteLine("\n");
+                }
+                Console.WriteLine("\n ----- My Weapons ----- ");
+                PrintWeaponList(player.MyShip.Weapons);
+                result = menu1.MenuToPrint();
+                switch (result)
+                {
+                    case "exit":
+                        ExitFlag = false;
+                        break;
+                    case "weapon 1":
+                        UpgradeWeapon(player, 0);
+                        break;
+                    case "weapon 2":
+                        UpgradeWeapon(player, 1);
+                        break;
+                    case "weapon 3":
+                        UpgradeWeapon(player, 2);
+                        break;
+                    case "weapon 4":
+                        UpgradeWeapon(player, 3);
+                        break;
+                    case "weapon 5":
+                        UpgradeWeapon(player, 4);
+                        break;
+
+                }
+            }
+        }
+        private void UpgradeWeapon(Player player , int weaponNumber)
+        {
+            if(player.MyShip.Weapons[weaponNumber].ToString() == "Projekt.WeakWeaponUpgrade" || player.MyShip.Weapons[weaponNumber].ToString() == "Projekt.HugeDamageUpgrade")
+            {
+                Console.WriteLine(player.MyShip.Weapons[weaponNumber].Print() + " !!! have alleady upgrade !!! ");
+                Console.ReadKey();
+                Console.Clear();
+            }
+            else
+            {
+                string[] UpgradeMenu = { "exit","Huge Damage", "Damage",
+                "Weigth","universal"};
+                bool UpgradeMenuExitFlag = true;
+                string UpgradeMenuResult;
+                PrintMenu menu1 = new PrintMenu();
+
+                string[] ChoiceMenu = { "Buy upgrade", "Exit" };
+                string ChoiceResult;
+                PrintMenu menu2 = new PrintMenu();
+                menu2._menu = ChoiceMenu;
+
+
+                menu1._menu = UpgradeMenu;
+                while (UpgradeMenuExitFlag)
+                {
+                    Console.Clear();
+                    UpgradeMenuResult = menu1.MenuToPrint();
+                    switch (UpgradeMenuResult)
+                    {
+                        case "exit":
+                            UpgradeMenuExitFlag = false;
+                            break;
+                        case "Huge Damage":
+                            Console.Clear();
+                            Console.WriteLine("\n\n\n Upgrade cost: " + (int)(player.MyShip.Weapons[weaponNumber].Cost * 1.15) + "$");
+                            ChoiceResult = menu2.MenuToPrint();
+                            switch (ChoiceResult)
+                            {
+                                case "Exit":
+                                    break;
+                                case "Buy upgrade":
+                                    if (player.MyMoney - (int)(player.MyShip.Weapons[weaponNumber].Cost * 1.15) < 0)
+                                    {
+                                        Console.WriteLine("Not Enougth Money");
+                                    }
+                                    else
+                                    {
+                                        player.MyMoney -= (int)(player.MyShip.Weapons[weaponNumber].Cost * 1.15);
+                                        player.MyShip.Weapons[weaponNumber] = new HugeDamageUpgrade(player.MyShip.Weapons[weaponNumber], player.MyShip.Weapons[weaponNumber].BaseAtack,
+                                            player.MyShip.Weapons[weaponNumber].BaseWeigth, player.MyShip.Weapons[weaponNumber].BaseHealth, player.MyShip.Weapons[weaponNumber].BaseReliable
+                                            , player.MyShip.Weapons[weaponNumber].Cost);
+                                    }
+                                    UpgradeMenuExitFlag = false;
+                                    break;
+                            }
+                            break;
+                        case "Damage":
+                            Console.Clear();
+                            Console.WriteLine("\n\n\n Upgrade cost: " + (int)(player.MyShip.Weapons[weaponNumber].Cost * 0.5) + "$");
+                            ChoiceResult = menu2.MenuToPrint();
+                            switch (ChoiceResult)
+                            {
+                                case "Exit":
+                                    break;
+                                case "Buy upgrade":
+                                    if (player.MyMoney - (int)(player.MyShip.Weapons[weaponNumber].Cost * 0.5) < 0)
+                                    {
+                                        Console.WriteLine("Not Enougth Money");
+                                    }
+                                    else
+                                    {
+                                        player.MyMoney -= (int)(player.MyShip.Weapons[weaponNumber].Cost * 0.5);
+                                        player.MyShip.Weapons[weaponNumber] = new WeakWeaponUpgrade(player.MyShip.Weapons[weaponNumber], player.MyShip.Weapons[weaponNumber].BaseAtack,
+                                             player.MyShip.Weapons[weaponNumber].BaseWeigth, player.MyShip.Weapons[weaponNumber].BaseHealth, player.MyShip.Weapons[weaponNumber].BaseReliable
+                                             , player.MyShip.Weapons[weaponNumber].Cost, 1);
+                                    }
+                                    UpgradeMenuExitFlag = false;
+                                    break;
+                            }
+                            break;
+                        case "Weigth":
+                            Console.Clear();
+                            Console.WriteLine("\n\n\n Upgrade cost: " + (int)(player.MyShip.Weapons[weaponNumber].Cost * 0.5) + "$");
+                            ChoiceResult = menu2.MenuToPrint();
+                            switch (ChoiceResult)
+                            {
+                                case "Exit":
+                                    break;
+                                case "Buy upgrade":
+                                    if (player.MyMoney - (int)(player.MyShip.Weapons[weaponNumber].Cost * 0.5) < 0)
+                                    {
+                                        Console.WriteLine("Not Enougth Money");
+                                    }
+                                    else
+                                    {
+                                        player.MyMoney -= (int)(player.MyShip.Weapons[weaponNumber].Cost * 0.5);
+                                        player.MyShip.Weapons[weaponNumber] = new WeakWeaponUpgrade(player.MyShip.Weapons[weaponNumber], player.MyShip.Weapons[weaponNumber].BaseAtack,
+                                             player.MyShip.Weapons[weaponNumber].BaseWeigth, player.MyShip.Weapons[weaponNumber].BaseHealth, player.MyShip.Weapons[weaponNumber].BaseReliable
+                                             , player.MyShip.Weapons[weaponNumber].Cost, 2);
+                                    }
+                                    UpgradeMenuExitFlag = false;
+                                    break;
+                            }
+                            break;
+                        case "universal":
+                            Console.Clear();
+                            Console.WriteLine("\n\n\n Upgrade cost: " + (int)(player.MyShip.Weapons[weaponNumber].Cost * 0.5) + "$");
+                            ChoiceResult = menu2.MenuToPrint();
+                            switch (ChoiceResult)
+                            {
+                                case "Exit":
+                                    break;
+                                case "Buy upgrade":
+                                    if (player.MyMoney - (int)(player.MyShip.Weapons[weaponNumber].Cost * 0.5) < 0)
+                                    {
+                                        Console.WriteLine("Not Enougth Money");
+                                    }
+                                    else
+                                    {
+                                        player.MyMoney -= (int)(player.MyShip.Weapons[weaponNumber].Cost * 0.5);
+                                        player.MyShip.Weapons[weaponNumber] = new WeakWeaponUpgrade(player.MyShip.Weapons[weaponNumber], player.MyShip.Weapons[weaponNumber].BaseAtack,
+                                             player.MyShip.Weapons[weaponNumber].BaseWeigth, player.MyShip.Weapons[weaponNumber].BaseHealth, player.MyShip.Weapons[weaponNumber].BaseReliable
+                                                 , player.MyShip.Weapons[weaponNumber].Cost, 3);
+                                    }
+                                    UpgradeMenuExitFlag = false;
+                                    break;
+                            }
+                            break;
+                    }
+                }
+            }
+            
         }
     }
 }

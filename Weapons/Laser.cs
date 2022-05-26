@@ -37,7 +37,11 @@ namespace Projekt
         }
         public override string Print()
         {
-            return this.GetType() + "\nExtra Damage: " + extraDamage + "\n" + base.Print();
+            return this.PrintName() + "\nExtra Damage: " + extraDamage + "\n" + base.Print();
+        }
+        public override string PrintName()
+        {
+            return "Laser";
         }
     }
 }

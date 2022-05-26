@@ -6,21 +6,26 @@ using System.Threading.Tasks;
 
 namespace Projekt
 {
-    internal abstract class WeaponsDecorator : IFWeapon
+    internal abstract class WeaponsDecorator : Weapon 
     {
         //TODO all decorator patern 
-        protected Weapon weapon { get; set; }
-        public WeaponsDecorator(Weapon _Ship)
+        protected Weapon MyWeapon;
+        public WeaponsDecorator(Weapon _Ship , int _atack=10, int _weigth=20, float _health=100, float _reliable=(float)0.5, int _cost =  100) 
+            : base(_atack,_weigth,_health,_reliable,_cost)
         {
-            weapon = _Ship;
+            this.MyWeapon = _Ship;
         }
-        public int GetAtack(Ship targegShip)
+        public override int GetAtack(Ship targegShip)
         {
-            return weapon.GetAtack(targegShip);
+            return MyWeapon.GetAtack(targegShip);
         }
-        public int Repair()
+        public override int Repair()
         {
-            return weapon.Repair();
+            return MyWeapon.Repair();
+        }
+        public override string Print()
+        {
+            return MyWeapon.Print();
         }
     }
 }

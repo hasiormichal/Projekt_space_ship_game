@@ -53,7 +53,11 @@ namespace Projekt
         }
         public override string Print()
         {
-            return this.GetType() + "\nBulet Count: " + bulletCount + "\n" + base.Print();
+            return this.PrintName() + "\nBulet Count: " + bulletCount + "\n" + base.Print();
+        }
+        public override string PrintName()
+        {
+            return "Fragmentary Cannon";
         }
     }
 }

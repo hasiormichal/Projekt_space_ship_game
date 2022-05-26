@@ -98,7 +98,7 @@ namespace Projekt
             }
         }
 
-        virtual public int GetAtack(Ship TargetShip)
+        public virtual int GetAtack(Ship TargetShip)
         {
             int atack = this.BaseAtack / TargetShip.ShieldGenerator.Shield - TargetShip.Hull.Armor;
             return atack;
@@ -186,7 +186,7 @@ namespace Projekt
             }
             return 1;
         }
-        public int Repair()
+        public virtual int Repair()
         {
             return (int)((100.0 - BaseHealth) * Cost / 1000);
         }
@@ -198,6 +198,10 @@ namespace Projekt
             temp += "Reliable: " + baseReliable + " ||| ";
             temp += "Cost: " + cost + "\n";
             return temp;
+        }
+        public virtual string PrintName() 
+        {
+            return "Weapon";
         }
     }
 }

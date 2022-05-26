@@ -43,7 +43,11 @@ namespace Projekt
         }
         public override string Print()
         {
-            return this.GetType() + "\nShield Penetration: " + shieldPenetration + "\n" + base.Print();
+            return this.PrintName() + "\nShield Penetration: " + shieldPenetration + "\n" + base.Print();
+        }
+        public override string PrintName()
+        {
+            return "Vortex";
         }
     }
 }

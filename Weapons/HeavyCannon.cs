@@ -56,7 +56,11 @@ namespace Projekt
         }
         public override string Print()
         {
-            return this.GetType() + "\nArmor Penetration: " + armorPenetration + "\n" + base.Print();
+            return this.PrintName() + "\nArmor Penetration: " + armorPenetration + "\n" + base.Print();
+        }
+        public override string PrintName()
+        {
+            return "Heavy Cannon";
         }
     }
 }
