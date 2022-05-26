@@ -8,6 +8,7 @@ namespace Projekt
 {
     internal class MenuFunctions
     {
+        public List<Planet> PlanetList;
         public void MenuChoicePrintShip(Player player)
         {
             string[] MainMenu = {"exit","Buy Fuel", "Buy Rockets", "engine", "fuel tank", "Shield generator", "droid", "hull", "weapon 1", "weapon 2",
@@ -969,6 +970,60 @@ namespace Projekt
                         break;
                 }
             }
+        }
+        public void MenuTravel(Player player)
+        {
+            string[] AllMap = new string[20];
+            AllMap[0] = "exit";
+            bool ExitFlag = true;
+            string result;
+            int i = 1;
+            foreach (string PlanetName in player.Localization.TravelMap.Keys)
+            {
+                AllMap[i] = PlanetName;
+                i++;
+            }
+
+            PrintMenu menu1 = new PrintMenu();
+            menu1._menu = AllMap;
+            while (ExitFlag)
+            {
+                Console.Clear();
+                result = menu1.MenuToPrint();
+                if (result == "exit")
+                {
+                    ExitFlag = false;
+                }
+                else
+                {
+                    foreach (Planet planet in PlanetList)
+                    {
+                        if (planet.Name == result)
+                        {
+                            string temp = player.Travel(planet);
+                            if(temp == "Successful travel")
+                            {
+                                Console.Clear();
+                                Console.WriteLine(temp);
+                                Console.ReadKey();
+                                ExitFlag = false;
+                                break;
+                            }
+                            else
+                            {
+                                Console.Clear();
+                                Console.WriteLine(temp);
+                                Console.ReadKey();
+                            }
+
+                        }
+                    }
+                }
+            }
+        }
+        public void MenuUpgradeWeapon(Player player)
+        {
+            //TODO
         }
     }
 }

@@ -28,6 +28,7 @@ namespace Projekt
         public  Droid NewDroid { get { return newDroid; }}
         public Hull NewHull { get { return newHull; }}
         public List <Weapon> WeaponList { get { return weaponList; } }
+        public string Name { get { return name; } }
 
         public Planet (string _name, int _fuelCost , int _rocketCost,Dictionary<string,int> map ,  int _lvl = 1)
         {

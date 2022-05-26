@@ -48,11 +48,25 @@ namespace Projekt
 
             return TotalDamage;
         }
-        public int Travel(Planet TargetPlanet)
+        public string Travel(Planet TargetPlanet)
         {
-            foreach (Dictionary<string,int> temp in Localization.TravelMap)
+            if (Localization.TravelMap.ContainsKey(TargetPlanet.Name))
             {
-                //TODO
+                if (Localization.TravelMap[TargetPlanet.Name] > MyShip.Engine.JumpRange)
+                {
+                    return "Engine has not enougth jump power: " + MyShip.Engine.JumpRange + " | need: " + Localization.TravelMap[TargetPlanet.Name];
+                }
+                if(Localization.TravelMap[TargetPlanet.Name] > MyShip.FuelTank.Capacity)
+                {
+                    return "Fuel Tank has not enougth Fuel: " + MyShip.FuelTank.Capacity + " | need: " + Localization.TravelMap[TargetPlanet.Name];
+                }
+                MyShip.FuelTank.Capacity -= Localization.TravelMap[TargetPlanet.Name];
+                Localization = TargetPlanet;
+                return "Successful travel";
+            }
+            else
+            {
+                return "Error: Target planet " + TargetPlanet.Name + " does not exist!";
             }
         }
     }

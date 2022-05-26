@@ -131,10 +131,19 @@ namespace Projekt
                 MenuFunctions menuFunctions = new MenuFunctions();
                 DictionaryMap WordMap = new DictionaryMap();
                 Factory factory = new Factory();
-                Planet Ziemia = new Planet("Ziemia",10,10,WordMap.Ziemia,1);
-                Planet Mars = new Planet("Mars",50,50,WordMap.Mars,1);
-                RandomGenerator MyGenerator = new RandomGenerator();
+                List<Planet> GlobalPlanetList = new List<Planet>();
+                Planet Ziemia = new Planet("Ziemia",20,15,WordMap.Earth,1);
+                Planet Mars = new Planet("Mars",25,20,WordMap.Mars,1);
+                Planet Jupiter = new Planet("Jupiter", 20, 20, WordMap.Jupiter, 1);
+                Planet Saturn = new Planet("Saturn", 30, 10, WordMap.Saturn, 2);
 
+                GlobalPlanetList.Add(Ziemia);
+                GlobalPlanetList.Add(Mars);
+                GlobalPlanetList.Add(Jupiter);
+                GlobalPlanetList.Add(Saturn);
+
+                menuFunctions.PlanetList = GlobalPlanetList;
+                RandomGenerator MyGenerator = new RandomGenerator();
 
 
                 List <Weapon> listV2 = new List<Weapon>();
@@ -160,7 +169,7 @@ namespace Projekt
                 //Figth(Me, Enemy);
                 //Console.ReadKey();
 
-                string[] MainMenu = { "Show my ship", "Repair", "Buy Weapon", "Buy Eq", "figth","upgrade" , "exit" };
+                string[] MainMenu = { "Show my ship", "Repair", "Buy Weapon", "Buy Eq","Travel", "figth","upgrade weapon","upgrade planet" , "exit" };
                 bool ExitFlag = true;
                 string result;
                 PrintMenu menu1 = new PrintMenu();
@@ -183,6 +192,9 @@ namespace Projekt
                         case "Buy Eq":
                             menuFunctions.MenuBuyEQ(Me.Localization, Me);
                             break;
+                        case "Travel":
+                            menuFunctions.MenuTravel(Me);
+                            break;
                         case "figth":
                             Player TempPlayer = MyGenerator.GeneratePlayer(1, Me.Localization);Console.Clear();
                             menuFunctions.MenuFigth(Me, TempPlayer);
@@ -191,7 +203,10 @@ namespace Projekt
                         case "exit":
                             ExitFlag = false;
                             break;
-                        case "upgrade":
+                        case "upgrade weapon":
+                            menuFunctions.MenuUpgradeWeapon(Me);
+                            break;
+                        case "upgrade planet":
                             Console.Clear();
                             string[] ChoiceMenu = { "upgrage", "Exit" };
                             string ChoiceResult;

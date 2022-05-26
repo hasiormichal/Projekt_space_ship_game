@@ -46,7 +46,6 @@ namespace Projekt
         public int FuelRefile (int cost)
         {
             int temp = MaxCapacity - Capacity;
-            Capacity = MaxCapacity;
             return temp * cost;
         }
         public override string Print()
