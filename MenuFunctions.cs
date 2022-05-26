@@ -371,12 +371,19 @@ namespace Projekt
         }
         public void MenuBuyEQ(Planet CurrentPlanet, Player CurrentPlayer)
         {
-            string[] MainMenu = { "exit", "engine", "fuel tank", "Shield generator", "droid", "hull" };
+            string[] MainMenu = { "exit", "refresh",  "engine", "fuel tank", "Shield generator", "droid", "hull" };
             bool ExitFlag = true;
             string result;
-            RandomGenerator EQGenerator = new RandomGenerator();
             PrintMenu menu1 = new PrintMenu();
             menu1._menu = MainMenu;
+
+            Engine NewEngine = CurrentPlanet.NewEngine;
+            FuelTank NewFuelTank = CurrentPlanet.NewFuelTank;
+            ShieldGenerator NewShieldGenerator = CurrentPlanet.NewShieldGenerator;
+            Droid NewDroid = CurrentPlanet.NewDroid;
+            Hull NewHull = CurrentPlanet.NewHull;
+
+
             while (ExitFlag)
             {
                 string[] ChoiceMenu = { "Buy", "Exit" };
@@ -387,6 +394,42 @@ namespace Projekt
                 result = menu1.MenuToPrint();
                 switch (result)
                 {
+                    case "refresh":
+                        while (ChoiceExitFlag)
+                        {
+                            Console.Clear();
+                            Console.WriteLine("\n\n\n Refresh Cost: " + Math.Pow(CurrentPlanet.PlanetLvl,2)*100 + "$");
+                            ChoiceResult = menu2.MenuToPrint();
+                            switch (ChoiceResult)
+                            {
+                                case "Exit":
+                                    ChoiceExitFlag = false;
+                                    break;
+                                case "Buy":
+                                    if (CurrentPlayer.MyMoney - (int)(Math.Pow(CurrentPlanet.PlanetLvl, 2) * 100) < 0)
+                                    {
+                                        Console.WriteLine("Not Enougth Money");
+                                        Console.ReadKey();
+                                        Console.Clear();
+                                    }
+                                    else
+                                    {
+                                        CurrentPlayer.MyMoney -= (int)(Math.Pow(CurrentPlanet.PlanetLvl, 2) * 100);
+                                        ChoiceExitFlag = false;
+                                        CurrentPlanet.GenerateNewQE();
+                                        NewEngine = CurrentPlanet.NewEngine;
+                                        NewFuelTank = CurrentPlanet.NewFuelTank;
+                                        NewShieldGenerator = CurrentPlanet.NewShieldGenerator;
+                                        NewDroid = CurrentPlanet.NewDroid;
+                                        NewHull = CurrentPlanet.NewHull;
+                                        Console.WriteLine("Successful refresh");
+                                        Console.ReadKey();
+                                        Console.Clear();
+                                    }
+                                    break;
+                            }
+                        }
+                        break;
                     case "exit":
                         ExitFlag = false;
                         break;
@@ -397,7 +440,6 @@ namespace Projekt
                             Console.WriteLine("\n\n\n--- My Engine: --- \n" + CurrentPlayer.MyShip.Engine.Print());
                             Console.WriteLine("Ship Weigth: " + CurrentPlayer.MyShip.GetCurrentWeigth() + " / " + CurrentPlayer.MyShip.Hull.MaxWeigth);
                             Console.WriteLine("Money: " + CurrentPlayer.MyMoney +"$  + (Sell old for: )" + (int)(CurrentPlayer.MyShip.Engine.Cost / 4)+"$");
-                            Engine NewEngine = (Engine)EQGenerator.RandomEQ(CurrentPlanet.PlanetLvl, 1);
                             Console.WriteLine("\n\n ##### New Engine ##### \n" + NewEngine.Print());
                             ChoiceResult = menu2.MenuToPrint();
                             switch (ChoiceResult)
@@ -439,7 +481,6 @@ namespace Projekt
                             Console.WriteLine("\n\n\n--- My Fuel Tank: --- \n" + CurrentPlayer.MyShip.FuelTank.Print());
                             Console.WriteLine("Ship Weigth: " + CurrentPlayer.MyShip.GetCurrentWeigth() + " / " + CurrentPlayer.MyShip.Hull.MaxWeigth);
                             Console.WriteLine("Money: " + CurrentPlayer.MyMoney + "$  + (Sell old for: )" + (int)(CurrentPlayer.MyShip.FuelTank.Cost / 4) + "$");
-                            FuelTank NewFuelTank = (FuelTank)EQGenerator.RandomEQ(CurrentPlanet.PlanetLvl, 2);
                             Console.WriteLine("\n\n ##### New Fuel Tank #####\n" + NewFuelTank.Print());
                             ChoiceResult = menu2.MenuToPrint();
                             switch (ChoiceResult)
@@ -481,7 +522,6 @@ namespace Projekt
                             Console.WriteLine("\n\n\n--- My Shield generator: --- \n" + CurrentPlayer.MyShip.ShieldGenerator.Print());
                             Console.WriteLine("Ship Weigth: " + CurrentPlayer.MyShip.GetCurrentWeigth() + " / " + CurrentPlayer.MyShip.Hull.MaxWeigth);
                             Console.WriteLine("Money: " + CurrentPlayer.MyMoney + "$  + (Sell old for: )" + (int)(CurrentPlayer.MyShip.ShieldGenerator.Cost / 4) + "$");
-                            ShieldGenerator NewShieldGenerator = (ShieldGenerator)EQGenerator.RandomEQ(CurrentPlanet.PlanetLvl, 3);
                             Console.WriteLine("\n\n ##### New Shield generator #####\n" + NewShieldGenerator.Print());
                             ChoiceResult = menu2.MenuToPrint();
                             switch (ChoiceResult)
@@ -523,7 +563,6 @@ namespace Projekt
                             Console.WriteLine("\n\n\n--- My droid: --- \n" + CurrentPlayer.MyShip.Droid.Print());
                             Console.WriteLine("Ship Weigth: " + CurrentPlayer.MyShip.GetCurrentWeigth() + " / " + CurrentPlayer.MyShip.Hull.MaxWeigth);
                             Console.WriteLine("Money: " + CurrentPlayer.MyMoney + "$  + (Sell old for: )" + (int)(CurrentPlayer.MyShip.Droid.Cost / 4) + "$");
-                            Droid NewDroid = (Droid)EQGenerator.RandomEQ(CurrentPlanet.PlanetLvl, 4);
                             Console.WriteLine("\n\n ##### New My droid #####\n" + NewDroid.Print());
                             ChoiceResult = menu2.MenuToPrint();
                             switch (ChoiceResult)
@@ -565,7 +604,6 @@ namespace Projekt
                             Console.WriteLine("\n\n\n--- My Hull: --- \n" + CurrentPlayer.MyShip.Hull.Print());
                             Console.WriteLine("Ship Weigth: " + CurrentPlayer.MyShip.GetCurrentWeigth() + " / " + CurrentPlayer.MyShip.Hull.MaxWeigth);
                             Console.WriteLine("Money: " + CurrentPlayer.MyMoney + "$  + (Sell old for: )" + (int)(CurrentPlayer.MyShip.Hull.Cost / 3) + "$");
-                            Hull NewHull = EQGenerator.RandomHull(CurrentPlanet.PlanetLvl);
                             Console.WriteLine("\n\n ##### New Hull ##### \n" + NewHull.Print());
                             ChoiceResult = menu2.MenuToPrint();
                             switch (ChoiceResult)
@@ -610,21 +648,13 @@ namespace Projekt
                 "weapon 3","weapon 4","weapon 5"};
             bool ExitFlag = true;
             string result;
-            RandomGenerator WeaponGenerator = new RandomGenerator();
             PrintMenu menu1 = new PrintMenu();
             string[] ShortList = new string[2 + player.MyShip.Hull.MaximumNumberOfWeapons];
             Array.Copy(MainMenu, ShortList, 2 + player.MyShip.Hull.MaximumNumberOfWeapons);
             menu1._menu = ShortList;
 
-
-
-            Random rand = new Random();
-            int WeaponNumber = rand.Next(2, 5);
             List<Weapon> TempList = new List<Weapon>();
-            for (int i = 0; i < WeaponNumber; i++)
-            {
-                TempList.Add(WeaponGenerator.RandomWeapon(player.Localization.PlanetLvl));
-            }
+            TempList = player.Localization.WeaponList;
 
             while (ExitFlag)
             {
@@ -640,7 +670,40 @@ namespace Projekt
                     case "exit":
                         ExitFlag = false;
                         break;
-                    case "Refresh":
+                    case "refresh":
+                        string[] ChoiceMenu = { "Buy", "Exit" };
+                        string ChoiceResult;
+                        bool ChoiceExitFlag = true;
+                        PrintMenu menu2 = new PrintMenu();
+                        menu2._menu = ChoiceMenu;
+                        while (ChoiceExitFlag)
+                        {
+                            Console.Clear();
+                            Console.WriteLine("\n\n\n Refresh Cost: " + Math.Pow(player.Localization.PlanetLvl, 2) * 100 + "$");
+                            ChoiceResult = menu2.MenuToPrint();
+                            switch (ChoiceResult)
+                            {
+                                case "Exit":
+                                    ChoiceExitFlag = false;
+                                    break;
+                                case "Buy":
+                                    if (player.MyMoney - (int)(Math.Pow(player.Localization.PlanetLvl, 2) * 100) < 0)
+                                    {
+                                        Console.WriteLine("Not Enougth Money");
+                                        Console.Clear();
+                                    }
+                                    else
+                                    {
+                                        player.MyMoney -= (int)(Math.Pow(player.Localization.PlanetLvl, 2) * 100);
+                                        ChoiceExitFlag = false;
+                                        player.Localization.GenerateNewWeapons();
+                                        TempList = player.Localization.WeaponList;
+                                        Console.WriteLine("Successful refresh");
+                                        Console.Clear();
+                                    }
+                                    break;
+                            }
+                        }
                         break;
                     case "weapon 1":
                         PrintAvailableWeapon(player, TempList, 0);
@@ -797,6 +860,7 @@ namespace Projekt
             Console.WriteLine("Ship HP: " + Enemy.MyShip.Hull.Health + "/" + Enemy.MyShip.Hull.MaxHealth);
             Console.WriteLine("Droid: " + Enemy.MyShip.Droid.RepairPower);
             Console.WriteLine("Shield Generator: " + Enemy.MyShip.ShieldGenerator.Shield);
+            Console.WriteLine("Armour: " + Enemy.MyShip.Hull.Armor);
             foreach(Weapon EnemyWeapon in Enemy.MyShip.Weapons)
             {
                 Console.WriteLine(EnemyWeapon.GetType() + " Atack: " + EnemyWeapon.BaseAtack);
@@ -814,81 +878,96 @@ namespace Projekt
         }
         private static void Figth(Player player1, Player player2)
         {
+            string[] FigthMenu = {"Figth", "Leave"};
+            string FigthResult;
+            PrintMenu FigthPrintMenu = new PrintMenu();
+            FigthPrintMenu._menu = FigthMenu;
+
+            int round = 1;
             bool fightFlag = true;
             string results;
             while (fightFlag)
             {
-                int round = 0;
-                //faster ship start figth
-                if (player1.MyShip.Engine.Speed > player2.MyShip.Engine.Speed)
-                {
-                    results = player1.MyShip.UseWeapons(player2.MyShip);
-                    Console.ForegroundColor = ConsoleColor.Cyan;
-                    Console.WriteLine("-----   " + player1.Name + "  -----\n" + results);
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine( player2.Name + " HP: " + player2.MyShip.Hull.Health + "/" + player2.MyShip.Hull.MaxHealth + "\n");
-                    if (player2.MyShip.Hull.Health <= 0)
-                    {
-                        //ship 2 lost 
-                        Console.ForegroundColor = ConsoleColor.Green;
-                        Console.WriteLine(player1.Name + " win the figth !!!");
-                        player1.MyMoney += player2.MyMoney;
-                        fightFlag = false;
-                        continue;
-                    }
 
-                    results = player2.MyShip.UseWeapons(player1.MyShip);
-                    Console.ForegroundColor = ConsoleColor.Cyan;
-                    Console.WriteLine("-----  "+player2.Name + "  -----\n" + results);
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine(player1.Name + " HP: " + player1.MyShip.Hull.Health + "/" + player1.MyShip.Hull.MaxHealth + "\n");
-                    if (player1.MyShip.Hull.Health <= 0)
-                    {
-                        //ship 1 lost 
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine(player2.Name + " win the figth !!!");
-                        player2.MyMoney += player1.MyMoney;
-                        fightFlag = false;
-                        continue;
-                    }
-                    Console.ReadKey();
-                }
-                else
+                FigthResult = FigthPrintMenu.MenuToPrint();
+                Console.WriteLine("\n\n");
+                switch (FigthResult)
                 {
-                    results = player2.MyShip.UseWeapons(player1.MyShip);
-                    Console.ForegroundColor = ConsoleColor.Cyan;
-                    Console.WriteLine("-----  "+player2.Name + "  -----\n" + results);
-;                   Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine(player1.Name + " HP: " + player1.MyShip.Hull.Health + "/" + player1.MyShip.Hull.MaxHealth + "\n");
-                    if (player1.MyShip.Hull.Health <= 0)
-                    {
-                        //ship 1 lost 
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine(player2.Name + " win the figth !!!");
-                        player2.MyMoney += player1.MyMoney;
-                        fightFlag = false;
-                        continue;
-                    }
+                    case "Figth":
+                        //faster ship start figth
+                        Console.WriteLine(" ============ Round {0} ============ ", round);
+                        if (player1.MyShip.Engine.Speed > player2.MyShip.Engine.Speed)
+                        {
+                            results = player1.MyShip.UseWeapons(player2.MyShip);
+                            Console.ForegroundColor = ConsoleColor.Cyan;
+                            Console.WriteLine("-----   " + player1.Name + "  -----\n" + results + " - " + player1.MyShip.Droid.RepairPower + "(Droid)");
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine(player2.Name + " HP: " + player2.MyShip.Hull.Health + "/" + player2.MyShip.Hull.MaxHealth + "\n");
+                            if (player2.MyShip.Hull.Health <= 0)
+                            {
+                                //ship 2 lost 
+                                Console.ForegroundColor = ConsoleColor.Green;
+                                Console.WriteLine(player1.Name + " win the figth !!!");
+                                player1.MyMoney += player2.MyMoney;
+                                fightFlag = false;
+                                continue;
+                            }
 
-                    results = player1.MyShip.UseWeapons(player2.MyShip);
-                    Console.ForegroundColor = ConsoleColor.Cyan;
-                    Console.WriteLine("-----  "+player1.Name + "  -----\n" + results);
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine(player2.Name + " HP: " + player2.MyShip.Hull.Health + "/" + player2.MyShip.Hull.MaxHealth + "\n");
-                    if (player2.MyShip.Hull.Health <= 0)
-                    {
-                        //ship 2 lost 
-                        Console.ForegroundColor = ConsoleColor.Green;
-                        Console.WriteLine(player1.Name + " win the figth !!!");
-                        player1.MyMoney += player2.MyMoney;
+                            results = player2.MyShip.UseWeapons(player1.MyShip);
+                            Console.ForegroundColor = ConsoleColor.Cyan;
+                            Console.WriteLine("-----  " + player2.Name + "  -----\n" + results + " - " + player2.MyShip.Droid.RepairPower + "(Droid)");
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.WriteLine(player1.Name + " HP: " + player1.MyShip.Hull.Health + "/" + player1.MyShip.Hull.MaxHealth + "\n");
+                            if (player1.MyShip.Hull.Health <= 0)
+                            {
+                                //ship 1 lost 
+                                Console.ForegroundColor = ConsoleColor.Red;
+                                Console.WriteLine(player2.Name + " win the figth !!!");
+                                player2.MyMoney += player1.MyMoney;
+                                fightFlag = false;
+                                continue;
+                            }
+                            round++;
+                        }
+                        else
+                        {
+                            results = player2.MyShip.UseWeapons(player1.MyShip);
+                            Console.ForegroundColor = ConsoleColor.Cyan;
+                            Console.WriteLine("-----  " + player2.Name + "  -----\n" + results + " - " + player2.MyShip.Droid.RepairPower + "(Droid)");
+                            ; Console.ForegroundColor = ConsoleColor.Green;
+                            Console.WriteLine(player1.Name + " HP: " + player1.MyShip.Hull.Health + "/" + player1.MyShip.Hull.MaxHealth + "\n");
+                            if (player1.MyShip.Hull.Health <= 0)
+                            {
+                                //ship 1 lost 
+                                Console.ForegroundColor = ConsoleColor.Red;
+                                Console.WriteLine(player2.Name + " win the figth !!!");
+                                player2.MyMoney += player1.MyMoney;
+                                fightFlag = false;
+                                continue;
+                            }
+
+                            results = player1.MyShip.UseWeapons(player2.MyShip);
+                            Console.ForegroundColor = ConsoleColor.Cyan;
+                            Console.WriteLine("-----  " + player1.Name + "  -----\n" + results + " - " + player1.MyShip.Droid.RepairPower + "(Droid)");
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine(player2.Name + " HP: " + player2.MyShip.Hull.Health + "/" + player2.MyShip.Hull.MaxHealth + "\n");
+                            if (player2.MyShip.Hull.Health <= 0)
+                            {
+                                //ship 2 lost 
+                                Console.ForegroundColor = ConsoleColor.Green;
+                                Console.WriteLine(player1.Name + " win the figth !!!");
+                                player1.MyMoney += player2.MyMoney;
+                                fightFlag = false;
+                                continue;
+                            }
+                            Console.ForegroundColor = ConsoleColor.Magenta;
+                            round++;
+                        }
+                        break;
+                    case "Leave":
                         fightFlag = false;
-                        continue;
-                    }
-                    Console.ForegroundColor = ConsoleColor.Magenta;
-                    
-                    Console.ReadKey();
+                        break;
                 }
-                Console.WriteLine(" ============ Round {0} end ============ ", round);
             }
         }
     }

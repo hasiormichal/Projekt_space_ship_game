@@ -31,21 +31,22 @@ namespace Projekt
             {
                 atack = this.BaseAtack / bulletCount - TargetShip.Hull.Armor;
             }
-            return atack;
+            return atack * bulletCount;
         }
         public override int DamageShip(Ship TargetShip, int atack)
         {
+            int CannonAtack;
+            if (TargetShip.ShieldGenerator.BaseHealth > 0)
+            {
+                CannonAtack = (this.BaseAtack / bulletCount) - (this.BaseAtack / bulletCount * TargetShip.ShieldGenerator.Shield / 100) - TargetShip.Hull.Armor;
+            }
+            else
+            {
+                CannonAtack = this.BaseAtack / bulletCount - TargetShip.Hull.Armor;
+            }
             for (int i = 0; i < bulletCount; i++)
             {
-                if (TargetShip.Hull.Health - GetAtack(TargetShip) < 0)
-                {
-                    TargetShip.Hull.Health = 0;
-                }
-                else
-                {
-                    TargetShip.Hull.Health -= GetAtack(TargetShip);
-                }
-                base.DamageShip(TargetShip, GetAtack(TargetShip));
+                base.DamageShip(TargetShip, CannonAtack);
             }
 
             return 1;

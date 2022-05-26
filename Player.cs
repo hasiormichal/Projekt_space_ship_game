@@ -48,5 +48,12 @@ namespace Projekt
 
             return TotalDamage;
         }
+        public int Travel(Planet TargetPlanet)
+        {
+            foreach (Dictionary<string,int> temp in Localization.TravelMap)
+            {
+                //TODO
+            }
+        }
     }
 }

@@ -129,9 +129,12 @@ namespace Projekt
             try
             {
                 MenuFunctions menuFunctions = new MenuFunctions();
+                DictionaryMap WordMap = new DictionaryMap();
                 Factory factory = new Factory();
-                Planet Ziemia = new Planet();
+                Planet Ziemia = new Planet("Ziemia",10,10,WordMap.Ziemia,1);
+                Planet Mars = new Planet("Mars",50,50,WordMap.Mars,1);
                 RandomGenerator MyGenerator = new RandomGenerator();
+
 
 
                 List <Weapon> listV2 = new List<Weapon>();
@@ -152,7 +155,7 @@ namespace Projekt
 
                 Player Me = MyGenerator.GeneratePlayer(1, Ziemia);
                 Me.Name = "Dudus";
-                Me.MyMoney += 3000;
+                Me.MyMoney += 5000;
 
                 //Figth(Me, Enemy);
                 //Console.ReadKey();
