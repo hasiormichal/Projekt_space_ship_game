@@ -11,7 +11,7 @@ namespace Projekt
         public List<Planet> PlanetList;
         public void MenuChoicePrintShip(Player player)
         {
-            string[] MainMenu = {"exit","Buy Fuel", "Buy Rockets", "engine", "fuel tank", "Shield generator", "droid", "hull", "weapon 1", "weapon 2",
+            string[] MainMenu = {"exit","engine", "fuel tank", "Shield generator", "droid", "hull", "weapon 1", "weapon 2",
                 "weapon 3","weapon 4","weapon 5"};
             bool ExitFlag = true;
             string result;
@@ -38,38 +38,6 @@ namespace Projekt
                 result = menu1.MenuToPrint();
                 switch (result)
                 {
-                    case "Buy Fuel":
-                        if (player.MyMoney - player.MyShip.FuelTank.FuelRefile(player.Localization.FuelCost) < 0)
-                        {
-                            Console.WriteLine("Not enougth money");
-                            break;
-                        }
-                        else
-                        {
-                            player.MyMoney -= player.MyShip.FuelTank.FuelRefile(player.Localization.FuelCost);
-                            player.MyShip.FuelTank.Capacity = player.MyShip.FuelTank.MaxCapacity;
-                            break;
-                        }
-                    case "Buy Rockets":
-                        if (player.MyMoney < TotalRocketCost)
-                        {
-                            Console.WriteLine("Not enougth money");
-                            break;
-                        }
-                        else
-                        {
-                           for(int i=0; i<player.MyShip.Weapons.Count; i++)
-                            {
-                                if (player.MyShip.Weapons[i].GetType() == tempRocket.GetType())
-                                {
-                                    tempRocket = (RocketLauncher)player.MyShip.Weapons[i];
-                                    tempRocket.MagazinSize = tempRocket.MaxMagazinSize;
-                                    player.MyShip.Weapons[i] = tempRocket;
-                                }
-                            }
-                            player.MyMoney -= TotalRocketCost;
-                            break;
-                        }
                     case "engine":
                         Console.WriteLine(player.MyShip.Engine.Print());
                         Console.ReadKey();
@@ -185,12 +153,7 @@ namespace Projekt
 
             while (ExitFlag)
             {
-                int TotalRepaiCost = player.MyShip.Hull.Repair() + player.MyShip.Engine.Repair() + player.MyShip.FuelTank.Repair() +
-                     player.MyShip.ShieldGenerator.Repair() + player.MyShip.Droid.Repair();
-                foreach (Weapon RepairWeapon in player.MyShip.Weapons)
-                {
-                    TotalRepaiCost += RepairWeapon.Repair();
-                }
+                int TotalRepaiCost = player.RepairAll();
                 Console.WriteLine("\n\n\n\n\n\n\n\n\n\n\n\nAll repair cost: " + TotalRepaiCost);
                 Console.WriteLine("Hull repair cost: " + player.MyShip.Hull.Repair());
                 Console.WriteLine("Engine repair cost: " + player.MyShip.Engine.Repair());
@@ -387,7 +350,7 @@ namespace Projekt
 
             while (ExitFlag)
             {
-                string[] ChoiceMenu = { "Buy", "Exit" };
+                string[] ChoiceMenu = {"Exit","Buy"};
                 string ChoiceResult;
                 bool ChoiceExitFlag = true;
                 PrintMenu menu2 = new PrintMenu();
@@ -659,7 +622,7 @@ namespace Projekt
 
             while (ExitFlag)
             {
-                for (int i = 0; i < 2 + player.MyShip.Hull.MaximumNumberOfWeapons; i++)
+                for (int i = 0; i < 2 + player.MyShip.Weapons.Count; i++)
                 {
                     Console.WriteLine("\n");
                 }
@@ -672,7 +635,7 @@ namespace Projekt
                         ExitFlag = false;
                         break;
                     case "refresh":
-                        string[] ChoiceMenu = { "Buy", "Exit" };
+                        string[] ChoiceMenu = { "Exit","Buy"};
                         string ChoiceResult;
                         bool ChoiceExitFlag = true;
                         PrintMenu menu2 = new PrintMenu();
@@ -697,8 +660,8 @@ namespace Projekt
                                     {
                                         player.MyMoney -= (int)(Math.Pow(player.Localization.PlanetLvl, 2) * 100);
                                         ChoiceExitFlag = false;
-                                        player.Localization.GenerateNewWeapons();
-                                        TempList = player.Localization.WeaponList;
+                                        player.Localization.GenerateNewWeapons(); //generate list of wenpon base on players localization
+                                        TempList = player.Localization.WeaponList; //every planet have own weapon list
                                         Console.WriteLine("Successful refresh");
                                         Console.Clear();
                                     }
@@ -734,29 +697,53 @@ namespace Projekt
         }
         private bool CheckWeponLimits(Player player, Weapon NewWeapon, int WeaponNumber)
         {
-            if (player.MyMoney + (int)(player.MyShip.Weapons[WeaponNumber].Cost / 4) - NewWeapon.Cost < 0)
+            if(WeaponNumber == -1)
             {
-                Console.WriteLine("Not Enougth Money");
-                Console.ReadKey();
-                Console.Clear();
-                return false;
+                if (player.MyMoney - NewWeapon.Cost < 0)
+                {
+                    Console.WriteLine("Not Enougth Money");
+                    Console.ReadKey();
+                    Console.Clear();
+                    return false;
+                }
+                if (player.MyShip.GetCurrentWeigth() + NewWeapon.BaseWeigth >= player.MyShip.Hull.MaxWeigth)
+                {
+                    Console.WriteLine("Not Enougth Ship Weigth");
+                    Console.ReadKey();
+                    Console.Clear();
+                    return false;
+                }
+                return true;
             }
-            if (player.MyShip.GetCurrentWeigth() - player.MyShip.Weapons[WeaponNumber].BaseWeigth + NewWeapon.BaseWeigth >= player.MyShip.Hull.MaxWeigth)
+            else if( WeaponNumber >= 0 && WeaponNumber <=4)
             {
-                Console.WriteLine("Not Enougth Ship Weigth");
-                Console.ReadKey();
-                Console.Clear();
-                return false;
+                if (player.MyMoney + (int)(player.MyShip.Weapons[WeaponNumber].Cost / 4) - NewWeapon.Cost < 0)
+                {
+                    Console.WriteLine("Not Enougth Money");
+                    Console.ReadKey();
+                    Console.Clear();
+                    return false;
+                }
+                if (player.MyShip.GetCurrentWeigth() - player.MyShip.Weapons[WeaponNumber].BaseWeigth + NewWeapon.BaseWeigth >= player.MyShip.Hull.MaxWeigth)
+                {
+                    Console.WriteLine("Not Enougth Ship Weigth");
+                    Console.ReadKey();
+                    Console.Clear();
+                    return false;
+                }
+                return true;
             }
-            return true;
+            else
+            {
+                throw new ArgumentException(String.Format("weapon number is {0}", WeaponNumber, this.ToString()), "MenuFunctions, CheckWeponLimits");
+            }
         }
         private bool SwitchWeapon(Player CurrentPlayer, Weapon NewWeapon, int WeaponNumber)
         {
-            string[] ChoiceMenu = { "Buy", "Exit" };
+            string[] ChoiceMenu = { "Exit", "Buy"  };
             string ChoiceResult;
             PrintMenu menu2 = new PrintMenu();
             menu2._menu = ChoiceMenu;
-
             Console.Clear();
             Console.WriteLine("\n\n\n--- My Old Weapon: --- \n" + CurrentPlayer.MyShip.Weapons[WeaponNumber].Print());
             Console.WriteLine("Ship Weigth: " + CurrentPlayer.MyShip.GetCurrentWeigth() + " / " + CurrentPlayer.MyShip.Hull.MaxWeigth);
@@ -783,6 +770,33 @@ namespace Projekt
             return false;
 
 
+        }
+        private bool BuyNewWeapon(Player CurrentPlayer, Weapon NewWeapon)
+        {
+            string[] ChoiceMenu = { "Exit", "Buy" };
+            string ChoiceResult;
+            PrintMenu menu2 = new PrintMenu();
+            menu2._menu = ChoiceMenu;
+            Console.Clear();
+            Console.WriteLine("\n\n ##### New Weapon ##### \n" + NewWeapon.Print());
+            ChoiceResult = menu2.MenuToPrint();
+            switch (ChoiceResult)
+            {
+                case "Exit":
+                    return false;
+                case "Buy":
+                    if (CheckWeponLimits(CurrentPlayer, NewWeapon, -1)) //-1 mean no Weapon
+                    {
+                        CurrentPlayer.MyShip.Weapons.Add(NewWeapon);
+                        CurrentPlayer.MyMoney -= NewWeapon.Cost;
+                        Console.WriteLine("Successful purchase");
+                        Console.ReadKey();
+                        Console.Clear();
+                        return true;
+                    }
+                    return false;
+            }
+            return false;
         }
         private void PrintAvailableWeapon(Player player, List<Weapon> NewList, int SelectedWeapon)
         {
@@ -811,38 +825,93 @@ namespace Projekt
                         SwitchWeaponFlag = false;
                         break;
                     case "weapon 1":
-                        if (SwitchWeapon(player, NewList[0], SelectedWeapon))
+                        if(SelectedWeapon+1 > player.MyShip.Weapons.Count()) //+1 cause selectexWeapon is an index but Count return number of weapon(not intex of lastest weapon)
                         {
-                            NewList.RemoveAt(0);
-                            break;
+                            if(BuyNewWeapon(player, NewList[0]))
+                            {
+                                NewList.RemoveAt(0);
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            if (SwitchWeapon(player, NewList[0], SelectedWeapon))
+                            {
+                                NewList.RemoveAt(0);
+                                break;
+                            }
                         }
                         break;
                     case "weapon 2":
-                        if (SwitchWeapon(player, NewList[1], SelectedWeapon))
+                        if (SelectedWeapon+1 > player.MyShip.Weapons.Count())
                         {
-                            NewList.RemoveAt(1);
-                            break;
+                            if (BuyNewWeapon(player, NewList[1]))
+                            {
+                                NewList.RemoveAt(1);
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            if (SwitchWeapon(player, NewList[1], SelectedWeapon))
+                            {
+                                NewList.RemoveAt(1);
+                                break;
+                            }
                         }
                         break;
                     case "weapon 3":
-                        if (SwitchWeapon(player, NewList[2], SelectedWeapon))
+                        if (SelectedWeapon+1 > player.MyShip.Weapons.Count())
                         {
-                            NewList.RemoveAt(2);
-                            break;
+                            if (BuyNewWeapon(player, NewList[2]))
+                            {
+                                NewList.RemoveAt(2);
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            if (SwitchWeapon(player, NewList[2], SelectedWeapon))
+                            {
+                                NewList.RemoveAt(2);
+                                break;
+                            }
                         }
                         break; ;
                     case "weapon 4":
-                        if (SwitchWeapon(player, NewList[3], SelectedWeapon))
+                        if (SelectedWeapon+1 > player.MyShip.Weapons.Count())
                         {
-                            NewList.RemoveAt(3);
-                            break;
+                            if (BuyNewWeapon(player, NewList[3]))
+                            {
+                                NewList.RemoveAt(3);
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            if (SwitchWeapon(player, NewList[3], SelectedWeapon))
+                            {
+                                NewList.RemoveAt(3);
+                                break;
+                            }
                         }
                         break;
                     case "weapon 5":
-                        if (SwitchWeapon(player, NewList[4], SelectedWeapon))
+                        if (SelectedWeapon+1 > player.MyShip.Weapons.Count())
                         {
-                            NewList.RemoveAt(4);
-                            break;
+                            if (BuyNewWeapon(player, NewList[4]))
+                            {
+                                NewList.RemoveAt(4);
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            if (SwitchWeapon(player, NewList[4], SelectedWeapon))
+                            {
+                                NewList.RemoveAt(4);
+                                break;
+                            }
                         }
                         break;
 
@@ -850,36 +919,115 @@ namespace Projekt
             }
 
         }
-        public void MenuFigth( Player player1 , Player Enemy)
-        {
-            string[] ChoiceMenu = { "Exit", "Figth" };
+        public void MenuFigth(Player player1, List<Player> EnemyList)
+        { 
             string ChoiceResult;
-            PrintMenu menu2 = new PrintMenu();
-            menu2._menu = ChoiceMenu;
+            bool ExitFlag = true;
+            while (ExitFlag)
+            {
+                int i = 1;
+                int TotalRocketCost = 0;
+                string[] ChoiceMenu = { "Exit", "Repair all + rockets", "Figth enemy 1", "Figth enemy 2", "Figth enemy 3", "Figth enemy 4", "Figth enemy 5" };
+                string[] ShortList = new string[2 + EnemyList.Count()];
+                Array.Copy(ChoiceMenu, ShortList, 2 + EnemyList.Count());
+                PrintMenu menu2 = new PrintMenu();
+                menu2._menu = ShortList;
+                RocketLauncher tempRocket = new RocketLauncher(10, 30, 100, (float)0.9, 100, 30);
+                foreach (Weapon weapons in player1.MyShip.Weapons)
+                {
+                    if (weapons.GetType() == tempRocket.GetType())
+                    {
+                        tempRocket = (RocketLauncher)weapons;
+                        TotalRocketCost += tempRocket.BuyRocket(player1.Localization.RocketCost);
+                    }
 
-            Console.WriteLine("\n\n\n ##### Enemy Ship #####");
-            Console.WriteLine("Ship HP: " + Enemy.MyShip.Hull.Health + "/" + Enemy.MyShip.Hull.MaxHealth);
-            Console.WriteLine("Droid: " + Enemy.MyShip.Droid.RepairPower);
-            Console.WriteLine("Shield Generator: " + Enemy.MyShip.ShieldGenerator.Shield);
-            Console.WriteLine("Armour: " + Enemy.MyShip.Hull.Armor);
-            foreach(Weapon EnemyWeapon in Enemy.MyShip.Weapons)
-            {
-                Console.WriteLine(EnemyWeapon.GetType() + " Atack: " + EnemyWeapon.BaseAtack);
+                }
+
+                Console.Clear();
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.WriteLine("\n                     Total cost: {0}$", player1.RepairAll());
+                Console.WriteLine("\n\n\n\n\n");
+                foreach (Player Enemy in EnemyList)
+                {
+                    Console.WriteLine("##### Enemy Ship nr. {0} #####", i);
+                    Console.WriteLine("Ship HP: " + Enemy.MyShip.Hull.Health + "/" + Enemy.MyShip.Hull.MaxHealth + " | " + "Droid: " + Enemy.MyShip.Droid.RepairPower
+                        + " | " + "Shield Generator: " + Enemy.MyShip.ShieldGenerator.Shield + " | " + "Armour: " + Enemy.MyShip.Hull.Armor);
+                    foreach (Weapon EnemyWeapon in Enemy.MyShip.Weapons)
+                    {
+                        Console.WriteLine(EnemyWeapon.GetType() + " Atack: " + EnemyWeapon.BaseAtack);
+                    }
+                    i++;
+                    Console.WriteLine("\n");
+                }
+
+                ChoiceResult = menu2.MenuToPrint();
+                switch (ChoiceResult)
+                {
+                    case "Exit":
+                        ExitFlag = false;
+                        break;
+                    case "Repair all + rockets":
+                        if(player1.MyMoney - (player1.RepairAll()+ TotalRocketCost) < 0)
+                        {
+                            Console.Clear();
+                            Console.WriteLine("Not enougth money !!!");
+                            Console.ReadKey();
+                        }
+                        else
+                        {
+                            player1.MyMoney -= player1.RepairAll();
+                            player1.MyShip.Hull.Health = player1.MyShip.Hull.MaxHealth;
+                            player1.MyShip.Engine.BaseHealth = 100;
+                            player1.MyShip.FuelTank.BaseHealth = 100;
+                            player1.MyShip.ShieldGenerator.BaseHealth = 100;
+                            player1.MyShip.Droid.BaseHealth = 100;
+                            foreach (Weapon weapons in player1.MyShip.Weapons)
+                            {
+                                weapons.BaseHealth = 100;
+                            }
+                            for (int ii = 0; ii < player1.MyShip.Weapons.Count; ii++)
+                            {
+                                if (player1.MyShip.Weapons[ii].GetType() == tempRocket.GetType())
+                                {
+                                    tempRocket = (RocketLauncher)player1.MyShip.Weapons[ii];
+                                    tempRocket.MagazinSize = tempRocket.MaxMagazinSize;
+                                    player1.MyShip.Weapons[ii] = tempRocket;
+                                }
+                            }
+                        }
+                        break;
+                    case "Figth enemy 1":
+                        Figth(player1, EnemyList[0]);
+                        EnemyList.RemoveAt(0);
+                        Console.ReadKey();
+                        break;
+                    case "Figth enemy 2":
+                        Figth(player1, EnemyList[1]);
+                        EnemyList.RemoveAt(1);
+                        Console.ReadKey();
+                        break;
+                    case "Figth enemy 3":
+                        Figth(player1, EnemyList[2]);
+                        EnemyList.RemoveAt(2);
+                        Console.ReadKey();
+                        break;
+                    case "Figth enemy 4":
+                        Figth(player1, EnemyList[3]);
+                        EnemyList.RemoveAt(3);
+                        Console.ReadKey();
+                        break;
+                    case "Figth enemy 5":
+                        Figth(player1, EnemyList[4]);
+                        EnemyList.RemoveAt(4);
+                        Console.ReadKey();
+                        break;
+                }
             }
-           ChoiceResult = menu2.MenuToPrint();
-            switch (ChoiceResult)
-            {
-                case "Exit":
-                    break;
-                case "Figth":
-                    Console.Clear();
-                    Figth(player1, Enemy);
-                    break;
-            }
+            
         }
         private static void Figth(Player player1, Player player2)
         {
-            string[] FigthMenu = {"Figth", "Leave"};
+            string[] FigthMenu = { "Leave","Figth"};
             string FigthResult;
             PrintMenu FigthPrintMenu = new PrintMenu();
             FigthPrintMenu._menu = FigthMenu;
@@ -901,7 +1049,7 @@ namespace Projekt
                         {
                             results = player1.MyShip.UseWeapons(player2.MyShip);
                             Console.ForegroundColor = ConsoleColor.Cyan;
-                            Console.WriteLine("-----   " + player1.Name + "  -----\n" + results + " - " + player1.MyShip.Droid.RepairPower + "(Droid)");
+                            Console.WriteLine("-----   " + player1.Name + "  -----\n" + results + " ( -" + player1.MyShip.Droid.RepairPower + " Droid)");
                             Console.ForegroundColor = ConsoleColor.Red;
                             Console.WriteLine(player2.Name + " HP: " + player2.MyShip.Hull.Health + "/" + player2.MyShip.Hull.MaxHealth + "\n");
                             if (player2.MyShip.Hull.Health <= 0)
@@ -916,7 +1064,7 @@ namespace Projekt
 
                             results = player2.MyShip.UseWeapons(player1.MyShip);
                             Console.ForegroundColor = ConsoleColor.Cyan;
-                            Console.WriteLine("-----  " + player2.Name + "  -----\n" + results + " - " + player2.MyShip.Droid.RepairPower + "(Droid)");
+                            Console.WriteLine("-----  " + player2.Name + "  -----\n" + results + " ( -" + player2.MyShip.Droid.RepairPower + " Droid)");
                             Console.ForegroundColor = ConsoleColor.Green;
                             Console.WriteLine(player1.Name + " HP: " + player1.MyShip.Hull.Health + "/" + player1.MyShip.Hull.MaxHealth + "\n");
                             if (player1.MyShip.Hull.Health <= 0)
@@ -934,7 +1082,7 @@ namespace Projekt
                         {
                             results = player2.MyShip.UseWeapons(player1.MyShip);
                             Console.ForegroundColor = ConsoleColor.Cyan;
-                            Console.WriteLine("-----  " + player2.Name + "  -----\n" + results + " - " + player2.MyShip.Droid.RepairPower + "(Droid)");
+                            Console.WriteLine("-----  " + player2.Name + "  -----\n" + results + " ( -" + player2.MyShip.Droid.RepairPower + " Droid)");
                             ; Console.ForegroundColor = ConsoleColor.Green;
                             Console.WriteLine(player1.Name + " HP: " + player1.MyShip.Hull.Health + "/" + player1.MyShip.Hull.MaxHealth + "\n");
                             if (player1.MyShip.Hull.Health <= 0)
@@ -949,7 +1097,7 @@ namespace Projekt
 
                             results = player1.MyShip.UseWeapons(player2.MyShip);
                             Console.ForegroundColor = ConsoleColor.Cyan;
-                            Console.WriteLine("-----  " + player1.Name + "  -----\n" + results + " - " + player1.MyShip.Droid.RepairPower + "(Droid)");
+                            Console.WriteLine("-----  " + player1.Name + "  -----\n" + results + " ( -" + player1.MyShip.Droid.RepairPower + " Droid)");
                             Console.ForegroundColor = ConsoleColor.Red;
                             Console.WriteLine(player2.Name + " HP: " + player2.MyShip.Hull.Health + "/" + player2.MyShip.Hull.MaxHealth + "\n");
                             if (player2.MyShip.Hull.Health <= 0)
@@ -1084,7 +1232,7 @@ namespace Projekt
                 string UpgradeMenuResult;
                 PrintMenu menu1 = new PrintMenu();
 
-                string[] ChoiceMenu = { "Buy upgrade", "Exit" };
+                string[] ChoiceMenu = { "Exit","Buy upgrade"  };
                 string ChoiceResult;
                 PrintMenu menu2 = new PrintMenu();
                 menu2._menu = ChoiceMenu;

@@ -27,6 +27,10 @@ namespace Projekt
                     case ConsoleKey.UpArrow: menu.MoveUp(); break;
                     case ConsoleKey.DownArrow: menu.MoveDown(); break;
                     case ConsoleKey.Enter: done = true; break;
+                    case ConsoleKey.Escape:
+                        done = true;
+                        menu.Exit();
+                        break;
                 }
             }
             while (!done);

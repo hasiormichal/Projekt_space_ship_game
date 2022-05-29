@@ -146,30 +146,12 @@ namespace Projekt
                 RandomGenerator MyGenerator = new RandomGenerator();
 
 
-                List <Weapon> listV2 = new List<Weapon>();
-                Tetronik TetronikGenV1 = factory.GenerateTetronik(1);
-                HeavyCannon heavyCannonGenV2 = factory.GenerateHeavyCannon(2);
-                listV2.Add(TetronikGenV1);
-                listV2.Add(heavyCannonGenV2);
-
-                Engine EngineGenV2 = factory.GenerateEngine(2);
-                FuelTank FuelGenV2 = factory.GeneratorFuelTank(2);
-                Droid DroidGenV2 = factory.GenerateDroid(2);
-                ShieldGenerator ShieldGenV2 = factory.GeneratorShieldGenerator(2);
-                Hull HullGenV2 = factory.GenerateHull(3);
-
-                Ship ShipV2 = new Ship(HullGenV2,listV2,EngineGenV2,FuelGenV2,ShieldGenV2,DroidGenV2);
-                //Console.WriteLine(ShipV1.ShowShipStatus());
-
-
-                Player Me = MyGenerator.GeneratePlayer(1, Ziemia);
+                Player Me = MyGenerator.GeneratePlayer(Ziemia);
                 Me.Name = "Dudus";
-                Me.MyMoney += 5000;
+                Me.MyMoney += 50000;
 
-                //Figth(Me, Enemy);
-                //Console.ReadKey();
-
-                string[] MainMenu = { "Show my ship", "Repair", "Buy Weapon", "Buy Eq","Travel", "figth","upgrade weapon","upgrade planet" , "exit" };
+                string[] MainMenu = { "exit", "Show my ship", "Repair", "Buy Fuel", "Buy Rockets","Buy Weapon", "Buy Eq","Travel", "figth","upgrade weapon","" +
+                        "upgrade planet"};
                 bool ExitFlag = true;
                 string result;
                 PrintMenu menu1 = new PrintMenu();
@@ -177,9 +159,60 @@ namespace Projekt
                 while (ExitFlag)
                 {
                     Console.Clear();
+
+                    Console.WriteLine("\n\n\n\n\n\n\n\n\n\n\n\n\n\nMy money: " + Me.MyMoney + "$");
+                    Console.WriteLine("Fuel:" + Me.MyShip.FuelTank.Capacity + "/" + Me.MyShip.FuelTank.MaxCapacity +
+                        "| Refile cost: " + Me.MyShip.FuelTank.FuelRefile(Me.Localization.FuelCost));
+                    int TotalRocketCost = 0;
+                    RocketLauncher tempRocket = new RocketLauncher(10, 30, 100, (float)0.9, 100, 30);
+                    foreach (Weapon weapons in Me.MyShip.Weapons)
+                    {
+                        if (weapons.GetType() == tempRocket.GetType())
+                        {
+                            tempRocket = (RocketLauncher)weapons;
+                            Console.WriteLine("Rockets: " + tempRocket.MagazinSize + "/" + tempRocket.MaxMagazinSize);
+                            TotalRocketCost += tempRocket.BuyRocket(Me.Localization.RocketCost);
+                        }
+
+                    }
+                    Console.WriteLine("Total rockets cost: " + TotalRocketCost + "$");
                     result = menu1.MenuToPrint();
                     switch (result)
                     {
+                        case "Buy Fuel":
+                            if (Me.MyMoney - Me.MyShip.FuelTank.FuelRefile(Me.Localization.FuelCost) < 0)
+                            {
+                                Console.WriteLine("Not enougth money");
+                                Console.ReadKey();
+                                break;
+                            }
+                            else
+                            {
+                                Me.MyMoney -= Me.MyShip.FuelTank.FuelRefile(Me.Localization.FuelCost);
+                                Me.MyShip.FuelTank.Capacity = Me.MyShip.FuelTank.MaxCapacity;
+                                break;
+                            }
+                        case "Buy Rockets":
+                            if (Me.MyMoney < TotalRocketCost)
+                            {
+                                Console.WriteLine("Not enougth money");
+                                Console.ReadKey();
+                                break;
+                            }
+                            else
+                            {
+                                for (int i = 0; i < Me.MyShip.Weapons.Count; i++)
+                                {
+                                    if (Me.MyShip.Weapons[i].GetType() == tempRocket.GetType())
+                                    {
+                                        tempRocket = (RocketLauncher)Me.MyShip.Weapons[i];
+                                        tempRocket.MagazinSize = tempRocket.MaxMagazinSize;
+                                        Me.MyShip.Weapons[i] = tempRocket;
+                                    }
+                                }
+                                Me.MyMoney -= TotalRocketCost;
+                                break;
+                            }
                         case "Show my ship":
                             menuFunctions.MenuChoicePrintShip(Me);
                             break;
@@ -194,11 +227,13 @@ namespace Projekt
                             break;
                         case "Travel":
                             menuFunctions.MenuTravel(Me);
+                            
                             break;
                         case "figth":
-                            Player TempPlayer = MyGenerator.GeneratePlayer(1, Me.Localization);Console.Clear();
-                            menuFunctions.MenuFigth(Me, TempPlayer);
-                            Console.ReadKey();
+                            List<Player> PlayerList = new List<Player>();
+                            PlayerList.Add(MyGenerator.GeneratePlayer(Me.Localization));
+                            PlayerList.Add(MyGenerator.GeneratePlayer(Me.Localization));
+                            menuFunctions.MenuFigth(Me, PlayerList);
                             break;
                         case "exit":
                             ExitFlag = false;
@@ -208,7 +243,7 @@ namespace Projekt
                             break;
                         case "upgrade planet":
                             Console.Clear();
-                            string[] ChoiceMenu = { "upgrage", "Exit" };
+                            string[] ChoiceMenu = { "Exit","upgrage" };
                             string ChoiceResult;
                             bool ChoiceExitFlag = true;
                             PrintMenu menu2 = new PrintMenu();

@@ -24,5 +24,6 @@ namespace Projekt
         public void MoveUp() => SelectedIndex = Math.Max(SelectedIndex - 1, 0);
 
         public void MoveDown() => SelectedIndex = Math.Min(SelectedIndex + 1, Items.Count - 1);
+        public void Exit() => SelectedIndex = 0;
     }
 }

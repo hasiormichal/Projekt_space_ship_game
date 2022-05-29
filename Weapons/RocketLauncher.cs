@@ -12,7 +12,7 @@ namespace Projekt
         private int magazinSize;
         public RocketLauncher(int atack, int weigth, float healt, float reliable, int cost, int _maxMagazinSize) : base(atack, weigth, healt, reliable, cost)
         {
-            if (_maxMagazinSize < 0 || _maxMagazinSize > 50)
+            if (_maxMagazinSize < 0 || _maxMagazinSize > 60)
             {
                 throw new ArgumentException(String.Format("{0} is < 0 or > 10 in: {1}", _maxMagazinSize, this.ToString()), "MaxMagazinSize");
             }
