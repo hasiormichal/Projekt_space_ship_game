@@ -14,6 +14,7 @@ namespace Projekt
         private int rocketCost;
 
         public Dictionary<string, int> TravelMap;
+        public List<Player> EnemyPlayer = new List<Player>();
 
         private List<Weapon> weaponList;
         private Engine newEngine;
@@ -22,6 +23,7 @@ namespace Projekt
         private Droid newDroid;
         private Hull newHull;
 
+        //public List<Player> EnemyPlayer {get { return enemyPlayer; } set { enemyPlayer = value; } }
         public Engine NewEngine { get { return newEngine; } }
         public FuelTank NewFuelTank { get { return newFuelTank; }}
         public ShieldGenerator NewShieldGenerator { get { return newShieldGenerator; }}
@@ -30,7 +32,7 @@ namespace Projekt
         public List <Weapon> WeaponList { get { return weaponList; } }
         public string Name { get { return name; } }
 
-        public Planet (string _name, int _fuelCost , int _rocketCost,Dictionary<string,int> map ,  int _lvl = 1)
+        public Planet (string _name, int _fuelCost , int _rocketCost,Dictionary<string,int> map,  int _lvl = 1)
         {
             //TODO: add expatation for FuelCost and RocketCost value
             name = _name;

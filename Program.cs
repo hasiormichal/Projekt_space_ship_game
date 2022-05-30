@@ -136,19 +136,39 @@ namespace Projekt
                 Planet Mars = new Planet("Mars",25,20,WordMap.Mars,1);
                 Planet Jupiter = new Planet("Jupiter", 20, 20, WordMap.Jupiter, 1);
                 Planet Saturn = new Planet("Saturn", 30, 10, WordMap.Saturn, 2);
+                Planet Alfa3825 = new Planet("Alfa3825", 20, 20, WordMap.Alfa3825, 2);
+                Planet Pandora = new Planet("Pandora", 30, 15, WordMap.Pandora, 2);
+                Planet Celestia = new Planet("Celestia", 30, 25, WordMap.Celestia, 2);
+                Planet Orion47 = new Planet("Orion47", 20, 35, WordMap.Orion47, 2);
+                Planet Envito = new Planet("Envito", 30, 20, WordMap.Envito, 3);
+                Planet LastPlanet = new Planet("LastPlanet",45,45,WordMap.LastPlanet, 3);
 
                 GlobalPlanetList.Add(Ziemia);
                 GlobalPlanetList.Add(Mars);
                 GlobalPlanetList.Add(Jupiter);
                 GlobalPlanetList.Add(Saturn);
+                GlobalPlanetList.Add(Alfa3825);
+                GlobalPlanetList.Add(Pandora);
+                GlobalPlanetList.Add(Celestia);
+                GlobalPlanetList.Add(Orion47);
+                GlobalPlanetList.Add(Envito);
+                GlobalPlanetList.Add(LastPlanet);
+
 
                 menuFunctions.PlanetList = GlobalPlanetList;
                 RandomGenerator MyGenerator = new RandomGenerator();
 
+                BlackList FinalBlackList = new BlackList(8, GlobalPlanetList);
+
+                foreach (Planet planet in GlobalPlanetList)
+                {
+                    Player tempPlayer = MyGenerator.GeneratePlayer(planet);
+                    planet.EnemyPlayer.Add(tempPlayer);
+                }
 
                 Player Me = MyGenerator.GeneratePlayer(Ziemia);
                 Me.Name = "Dudus";
-                Me.MyMoney += 50000;
+                Me.MyMoney += 10000;
 
                 string[] MainMenu = { "exit", "Show my ship", "Repair", "Buy Fuel", "Buy Rockets","Buy Weapon", "Buy Eq","Travel", "figth","upgrade weapon","" +
                         "upgrade planet"};
@@ -159,7 +179,6 @@ namespace Projekt
                 while (ExitFlag)
                 {
                     Console.Clear();
-
                     Console.WriteLine("\n\n\n\n\n\n\n\n\n\n\n\n\n\nMy money: " + Me.MyMoney + "$");
                     Console.WriteLine("Fuel:" + Me.MyShip.FuelTank.Capacity + "/" + Me.MyShip.FuelTank.MaxCapacity +
                         "| Refile cost: " + Me.MyShip.FuelTank.FuelRefile(Me.Localization.FuelCost));
@@ -230,10 +249,7 @@ namespace Projekt
                             
                             break;
                         case "figth":
-                            List<Player> PlayerList = new List<Player>();
-                            PlayerList.Add(MyGenerator.GeneratePlayer(Me.Localization));
-                            PlayerList.Add(MyGenerator.GeneratePlayer(Me.Localization));
-                            menuFunctions.MenuFigth(Me, PlayerList);
+                            menuFunctions.MenuFigth(Me);
                             break;
                         case "exit":
                             ExitFlag = false;

@@ -128,14 +128,15 @@ namespace Projekt
 
         public Player GeneratePlayer (Planet localization)
         {
-            Hull TempHull = RandomHull(localization.PlanetLvl);
+            int lvl = localization.PlanetLvl;
+            Hull TempHull = RandomHull(lvl);
             List <Weapon> WeaponList = new List <Weapon>();
             for(int i=0; i<TempHull.MaximumNumberOfWeapons; i++)
             {
-                WeaponList.Add(RandomWeapon(localization.PlanetLvl));
+                WeaponList.Add(RandomWeapon(lvl));
             }
-            Ship TempShip = new Ship(TempHull, WeaponList, (Engine)RandomEQ(localization.PlanetLvl, 1), (FuelTank)RandomEQ(localization.PlanetLvl, 2),
-                (ShieldGenerator)RandomEQ(localization.PlanetLvl, 3), (Droid)RandomEQ(localization.PlanetLvl, 4));
+            Ship TempShip = new Ship(TempHull, WeaponList, (Engine)RandomEQ(lvl, 1), (FuelTank)RandomEQ(lvl, 2),
+                (ShieldGenerator)RandomEQ(lvl, 3), (Droid)RandomEQ(lvl, 4));
 
             int counter = 0;
             while (TempShip.GetCurrentWeigth() >= TempHull.MaxWeigth)
@@ -143,7 +144,7 @@ namespace Projekt
                 switch (counter)
                 {
                     case 0:
-                        Engine TempEngine = (Engine)RandomEQ(localization.PlanetLvl, 1);
+                        Engine TempEngine = (Engine)RandomEQ(lvl, 1);
                         if(TempEngine.BaseWeigth < TempShip.Engine.BaseWeigth)
                         {
                             TempShip.Engine = TempEngine;
@@ -151,7 +152,7 @@ namespace Projekt
                         counter++;
                         break;
                     case 1:
-                        FuelTank TempFuelTank = (FuelTank)(RandomEQ(localization.PlanetLvl, 2));
+                        FuelTank TempFuelTank = (FuelTank)(RandomEQ(lvl, 2));
                         if(TempFuelTank.BaseWeigth < TempShip.FuelTank.BaseWeigth)
                         {
                             TempShip.FuelTank = TempFuelTank;
@@ -159,7 +160,7 @@ namespace Projekt
                         counter++;
                         break;
                     case 2:
-                        ShieldGenerator TempShieldGenerator = (ShieldGenerator)RandomEQ(localization.PlanetLvl, 3);
+                        ShieldGenerator TempShieldGenerator = (ShieldGenerator)RandomEQ(lvl, 3);
                         if(TempShieldGenerator.BaseWeigth < TempShip.ShieldGenerator.BaseWeigth)
                         {
                             TempShip.ShieldGenerator = TempShieldGenerator;
@@ -167,7 +168,7 @@ namespace Projekt
                         counter++;
                         break;
                     case 3:
-                        Droid TempDroid = (Droid)RandomEQ(localization.PlanetLvl, 4);
+                        Droid TempDroid = (Droid)RandomEQ(lvl, 4);
                         if(TempDroid.BaseWeigth < TempShip.Droid.BaseWeigth)
                         {
                             TempShip.Droid = TempDroid;
@@ -177,7 +178,7 @@ namespace Projekt
 
                     //weapons now
                     case 4:
-                        Weapon TempWeapon1 = RandomWeapon(localization.PlanetLvl);
+                        Weapon TempWeapon1 = RandomWeapon(lvl);
                         if(TempWeapon1.BaseWeigth < TempShip.Weapons[0].BaseWeigth)
                         {
                             TempShip.Weapons[0] = TempWeapon1;
@@ -186,7 +187,7 @@ namespace Projekt
                         if(counter >= TempHull.MaximumNumberOfWeapons + 4) counter = 0;
                         break;
                     case 5:
-                        Weapon TempWeapon2 = RandomWeapon(localization.PlanetLvl);
+                        Weapon TempWeapon2 = RandomWeapon(lvl);
                         if (TempWeapon2.BaseWeigth < TempShip.Weapons[1].BaseWeigth)
                         {
                             TempShip.Weapons[1] = TempWeapon2;
@@ -195,7 +196,7 @@ namespace Projekt
                         if (counter >= TempHull.MaximumNumberOfWeapons + 4) counter = 0;
                         break;
                     case 6:
-                        Weapon TempWeapon3 = RandomWeapon(localization.PlanetLvl);
+                        Weapon TempWeapon3 = RandomWeapon(lvl);
                         if (TempWeapon3.BaseWeigth < TempShip.Weapons[2].BaseWeigth)
                         {
                             TempShip.Weapons[2] = TempWeapon3;
@@ -204,7 +205,7 @@ namespace Projekt
                         if (counter >= TempHull.MaximumNumberOfWeapons + 4) counter = 0;
                         break;
                     case 7:
-                        Weapon TempWeapon4 = RandomWeapon(localization.PlanetLvl);
+                        Weapon TempWeapon4 = RandomWeapon(lvl);
                         if (TempWeapon4.BaseWeigth < TempShip.Weapons[3].BaseWeigth)
                         {
                             TempShip.Weapons[3] = TempWeapon4;
@@ -213,7 +214,7 @@ namespace Projekt
                         if (counter >= TempHull.MaximumNumberOfWeapons + 4) counter = 0;
                         break;
                     case 8:
-                        Weapon TempWeapon5 = RandomWeapon(localization.PlanetLvl);
+                        Weapon TempWeapon5 = RandomWeapon(lvl);
                         if (TempWeapon5.BaseWeigth < TempShip.Weapons[4].BaseWeigth)
                         {
                             TempShip.Weapons[4] = TempWeapon5;
@@ -221,11 +222,11 @@ namespace Projekt
                         counter =0;
                         break;
                     default:
-                        throw new ArgumentException(String.Format("Generate switch invalid state: {0} Out of range (0,8)", localization.PlanetLvl), "Generate random player");
+                        throw new ArgumentException(String.Format("Generate switch invalid state: {0} Out of range (0,8)", lvl), "Generate random player");
                 }
             }
 
-            return new Player("Random "+random.Next(0,9999), TempShip , random.Next((int)(1700+600*Math.Pow(localization.PlanetLvl, 2)), (int)(2300+800 * Math.Pow(localization.PlanetLvl, 2))),localization );
+            return new Player("Random "+random.Next(0,9999), TempShip , random.Next((int)(1700+600*Math.Pow(lvl, 2)), (int)(2300+800 * Math.Pow(lvl, 2))),localization );
         }
     }
 }
