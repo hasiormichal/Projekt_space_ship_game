@@ -6,124 +6,6 @@ namespace Projekt
 {
     class Program
     {
-
-        /*
-        public static void MenuChoicePrintShip(Ship shipV1)
-        {
-            string[] MainMenu = { "engine", "fuel tank", "Shield generator", "droid", "hull", "weapon 1", "weapon 2",
-                "weapon 3","weapon 4","weapon 5","exit" };
-            bool ExitFlag = true;
-            string result;
-            PrintMenu menu1 = new PrintMenu();
-            menu1._menu = MainMenu;
-            while (ExitFlag)
-            {
-                result = menu1.MenuToPrint();
-                switch (result)
-                {
-                    case "engine":
-                        Console.WriteLine(shipV1.Engine.Print());
-                        Console.ReadKey();
-                        Console.Clear();
-                        break;
-                    case "fuel tank":
-                        Console.WriteLine(shipV1.FuelTank.Print());
-                        Console.ReadKey();
-                        Console.Clear();
-                        break;
-                    case "Shield generator":
-                        Console.WriteLine(shipV1.ShieldGenerator.Print());
-                        Console.ReadKey();
-                        Console.Clear();
-                        break;
-                    case "droid":
-                        Console.WriteLine(shipV1.Droid.Print());
-                        Console.ReadKey();
-                        Console.Clear();
-                        break;
-                    case "hull":
-                        Console.WriteLine(shipV1.Hull.Print());
-                        Console.ReadKey();
-                        Console.Clear();
-                        break;
-                    case "weapon 1":
-                        if(shipV1.Weapons.Count >= 1)
-                        {
-                            Console.WriteLine(shipV1.Weapons[0].Print());
-                            Console.ReadKey();
-                            Console.Clear();
-                        }
-                        else
-                        {
-                            Console.WriteLine("Ship do not 1 weapon slot");
-                            Console.ReadKey();
-                            Console.Clear();
-                        }
-
-                        break;
-                    case "weapon 2":
-                        if (shipV1.Weapons.Count >= 2)
-                        {
-                            Console.WriteLine(shipV1.Weapons[1].Print());
-                            Console.ReadKey();
-                            Console.Clear();
-                        }
-                        else
-                        {
-                            Console.WriteLine("Ship do not 2 weapon slot");
-                            Console.ReadKey();
-                            Console.Clear();
-                        }
-                        break;
-                    case "weapon 3":
-                        if (shipV1.Weapons.Count >= 3)
-                        {
-                            Console.WriteLine(shipV1.Weapons[2].Print());
-                            Console.ReadKey();
-                            Console.Clear();
-                        }
-                        else
-                        {
-                            Console.WriteLine("Ship do not 3 weapon slot");
-                            Console.ReadKey();
-                            Console.Clear();
-                        }
-                        break;
-                    case "weapon 4":
-                        if (shipV1.Weapons.Count >= 4)
-                        {
-                            Console.WriteLine(shipV1.Weapons[3].Print());
-                            Console.ReadKey();
-                            Console.Clear();
-                        }
-                        else
-                        {
-                            Console.WriteLine("Ship do not 4 weapon slot");
-                            Console.ReadKey();
-                            Console.Clear();
-                        }
-                        break;
-                    case "weapon 5":
-                        if (shipV1.Weapons.Count >= 5)
-                        {
-                            Console.WriteLine(shipV1.Weapons[4].Print());
-                            Console.ReadKey();
-                            Console.Clear();
-                        }
-                        else
-                        {
-                            Console.WriteLine("Ship do not 5 weapon slot");
-                            Console.ReadKey();
-                            Console.Clear();
-                        }
-                        break;
-                    case "exit":
-                        ExitFlag = false;
-                        break;
-                }
-            }
-        }
-        */
         static void Main(string[] args)
         {
             try
@@ -179,9 +61,14 @@ namespace Projekt
                 while (ExitFlag)
                 {
                     Console.Clear();
-                    Console.WriteLine("\n\n\n\n\n\n\n\n\n\n\n\n\n\nMy money: " + Me.MyMoney + "$");
+                    Console.WriteLine("\n\n\n\n\n\n\n\n\n\n               | Cost: " + (int)(1000 + Math.Pow(Me.Localization.PlanetLvl, 2) * 1500));
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("\nMy money: " + Me.MyMoney + "$");
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine("Planet: " + Me.Localization.Name + " | Plenet lvl: " + Me.Localization.PlanetLvl);
+                    Console.ForegroundColor = ConsoleColor.Cyan;
                     Console.WriteLine("Fuel:" + Me.MyShip.FuelTank.Capacity + "/" + Me.MyShip.FuelTank.MaxCapacity +
-                        "| Refile cost: " + Me.MyShip.FuelTank.FuelRefile(Me.Localization.FuelCost));
+                        " | Refile cost: " + Me.MyShip.FuelTank.FuelRefile(Me.Localization.FuelCost));
                     int TotalRocketCost = 0;
                     RocketLauncher tempRocket = new RocketLauncher(10, 30, 100, (float)0.9, 100, 30);
                     foreach (Weapon weapons in Me.MyShip.Weapons)
@@ -252,7 +139,13 @@ namespace Projekt
                             menuFunctions.MenuFigth(Me);
                             break;
                         case "exit":
-                            ExitFlag = false;
+                            Console.Clear();
+                            Console.WriteLine("Enter y/n to confirm.");
+                            var exit = Console.ReadKey();
+                            if (exit.Key == ConsoleKey.Y)
+                            {
+                                ExitFlag = false;
+                            }
                             break;
                         case "upgrade weapon":
                             menuFunctions.MenuUpgradeWeapon(Me);
