@@ -6,9 +6,13 @@ using System.Threading.Tasks;
 
 namespace Projekt
 {
-    internal class Droid : Equipment
+    public class Droid : Equipment
     {
         private readonly int repairPower;
+        public Droid() : base()
+        {
+            repairPower = 1;
+        }
         public Droid(int _weigth, float _health, float _reliable, int _cost, int _repairpower) : base(_weigth, _health, _reliable, _cost)
         {
             if (_repairpower < 0)

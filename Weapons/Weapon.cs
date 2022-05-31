@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Projekt
 {
-    abstract class Weapon : IFWeapon
+    public abstract class Weapon : IFWeapon
     {
         private int baseAtack;
         private int baseWeigth;
@@ -14,6 +14,14 @@ namespace Projekt
         private float baseReliable;
         private int cost;
 
+        public Weapon()
+        {
+            baseAtack = 1;
+            baseWeigth = 1;
+            BaseHealth = 100;
+            baseReliable = (float)0.99;
+            cost = 1;
+        }
         public Weapon(int _atack, int _weigth, float _health, float _reliable, int _cost)
         {
             BaseAtack = _atack;

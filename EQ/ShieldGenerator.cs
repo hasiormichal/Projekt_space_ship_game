@@ -6,9 +6,13 @@ using System.Threading.Tasks;
 
 namespace Projekt
 {
-    internal class ShieldGenerator: Equipment
+    public class ShieldGenerator: Equipment
     {
         private readonly int shield;
+        public ShieldGenerator() : base()
+        {
+            shield = 1;
+        }
         public ShieldGenerator(int weigth, float health, float reliable, int cost, int _shield) : base(weigth, health, reliable, cost)
         {
             if (_shield < 0)

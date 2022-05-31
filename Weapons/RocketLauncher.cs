@@ -6,10 +6,15 @@ using System.Threading.Tasks;
 
 namespace Projekt
 {
-    internal class RocketLauncher : Weapon
+    public class RocketLauncher : Weapon
     {
         private readonly int maxMagazinSize;
         private int magazinSize;
+        public RocketLauncher() : base()
+        {
+            magazinSize = 30;
+            maxMagazinSize = 30;
+        }
         public RocketLauncher(int atack, int weigth, float healt, float reliable, int cost, int _maxMagazinSize) : base(atack, weigth, healt, reliable, cost)
         {
             if (_maxMagazinSize < 0 || _maxMagazinSize > 60)

@@ -355,43 +355,29 @@ namespace Projekt
                 bool ChoiceExitFlag = true;
                 PrintMenu menu2 = new PrintMenu();
                 menu2._menu = ChoiceMenu;
+                Console.WriteLine("\n          | Cost: " + Math.Pow(CurrentPlanet.PlanetLvl, 2) * 100 + "$");
                 result = menu1.MenuToPrint();
                 switch (result)
                 {
                     case "refresh":
-                        while (ChoiceExitFlag)
+                        if (CurrentPlayer.MyMoney - (int)(Math.Pow(CurrentPlanet.PlanetLvl, 2) * 100) < 0)
                         {
+                            Console.WriteLine("Not Enougth Money");
+                            Console.ReadKey();
                             Console.Clear();
-                            Console.WriteLine("\n\n\n Refresh Cost: " + Math.Pow(CurrentPlanet.PlanetLvl, 2) * 100 + "$");
-                            ChoiceResult = menu2.MenuToPrint();
-                            switch (ChoiceResult)
-                            {
-                                case "Exit":
-                                    ChoiceExitFlag = false;
-                                    break;
-                                case "Buy":
-                                    if (CurrentPlayer.MyMoney - (int)(Math.Pow(CurrentPlanet.PlanetLvl, 2) * 100) < 0)
-                                    {
-                                        Console.WriteLine("Not Enougth Money");
-                                        Console.ReadKey();
-                                        Console.Clear();
-                                    }
-                                    else
-                                    {
-                                        CurrentPlayer.MyMoney -= (int)(Math.Pow(CurrentPlanet.PlanetLvl, 2) * 100);
-                                        ChoiceExitFlag = false;
-                                        CurrentPlanet.GenerateNewQE();
-                                        NewEngine = CurrentPlanet.NewEngine;
-                                        NewFuelTank = CurrentPlanet.NewFuelTank;
-                                        NewShieldGenerator = CurrentPlanet.NewShieldGenerator;
-                                        NewDroid = CurrentPlanet.NewDroid;
-                                        NewHull = CurrentPlanet.NewHull;
-                                        Console.WriteLine("Successful refresh");
-                                        Console.ReadKey();
-                                        Console.Clear();
-                                    }
-                                    break;
-                            }
+                        }
+                        else
+                        {
+                            CurrentPlayer.MyMoney -= (int)(Math.Pow(CurrentPlanet.PlanetLvl, 2) * 100);
+                            CurrentPlanet.GenerateNewQE();
+                            NewEngine = CurrentPlanet.NewEngine;
+                            NewFuelTank = CurrentPlanet.NewFuelTank;
+                            NewShieldGenerator = CurrentPlanet.NewShieldGenerator;
+                            NewDroid = CurrentPlanet.NewDroid;
+                            NewHull = CurrentPlanet.NewHull;
+                            Console.WriteLine("Successful refresh");
+                            Console.ReadKey();
+                            Console.Clear();
                         }
                         break;
                     case "exit":
@@ -401,9 +387,11 @@ namespace Projekt
                         while (ChoiceExitFlag)
                         {
                             Console.Clear();
+                            Console.ForegroundColor = ConsoleColor.Yellow;
                             Console.WriteLine("\n\n\n--- My Engine: --- \n" + CurrentPlayer.MyShip.Engine.Print());
                             Console.WriteLine("Ship Weigth: " + CurrentPlayer.MyShip.GetCurrentWeigth() + " / " + CurrentPlayer.MyShip.Hull.MaxWeigth);
                             Console.WriteLine("Money: " + CurrentPlayer.MyMoney + "$  + (Sell old for: )" + (int)(CurrentPlayer.MyShip.Engine.Cost / 4) + "$");
+                            Console.ForegroundColor = ConsoleColor.Cyan;
                             Console.WriteLine("\n\n ##### New Engine ##### \n" + NewEngine.Print());
                             ChoiceResult = menu2.MenuToPrint();
                             switch (ChoiceResult)
@@ -442,9 +430,11 @@ namespace Projekt
                         while (ChoiceExitFlag)
                         {
                             Console.Clear();
+                            Console.ForegroundColor = ConsoleColor.Yellow;
                             Console.WriteLine("\n\n\n--- My Fuel Tank: --- \n" + CurrentPlayer.MyShip.FuelTank.Print());
                             Console.WriteLine("Ship Weigth: " + CurrentPlayer.MyShip.GetCurrentWeigth() + " / " + CurrentPlayer.MyShip.Hull.MaxWeigth);
                             Console.WriteLine("Money: " + CurrentPlayer.MyMoney + "$  + (Sell old for: )" + (int)(CurrentPlayer.MyShip.FuelTank.Cost / 4) + "$");
+                            Console.ForegroundColor = ConsoleColor.Cyan;
                             Console.WriteLine("\n\n ##### New Fuel Tank #####\n" + NewFuelTank.Print());
                             ChoiceResult = menu2.MenuToPrint();
                             switch (ChoiceResult)
@@ -483,9 +473,11 @@ namespace Projekt
                         while (ChoiceExitFlag)
                         {
                             Console.Clear();
+                            Console.ForegroundColor = ConsoleColor.Yellow;
                             Console.WriteLine("\n\n\n--- My Shield generator: --- \n" + CurrentPlayer.MyShip.ShieldGenerator.Print());
                             Console.WriteLine("Ship Weigth: " + CurrentPlayer.MyShip.GetCurrentWeigth() + " / " + CurrentPlayer.MyShip.Hull.MaxWeigth);
                             Console.WriteLine("Money: " + CurrentPlayer.MyMoney + "$  + (Sell old for: )" + (int)(CurrentPlayer.MyShip.ShieldGenerator.Cost / 4) + "$");
+                            Console.ForegroundColor = ConsoleColor.Cyan;
                             Console.WriteLine("\n\n ##### New Shield generator #####\n" + NewShieldGenerator.Print());
                             ChoiceResult = menu2.MenuToPrint();
                             switch (ChoiceResult)
@@ -524,9 +516,11 @@ namespace Projekt
                         while (ChoiceExitFlag)
                         {
                             Console.Clear();
+                            Console.ForegroundColor = ConsoleColor.Yellow;
                             Console.WriteLine("\n\n\n--- My droid: --- \n" + CurrentPlayer.MyShip.Droid.Print());
                             Console.WriteLine("Ship Weigth: " + CurrentPlayer.MyShip.GetCurrentWeigth() + " / " + CurrentPlayer.MyShip.Hull.MaxWeigth);
                             Console.WriteLine("Money: " + CurrentPlayer.MyMoney + "$  + (Sell old for: )" + (int)(CurrentPlayer.MyShip.Droid.Cost / 4) + "$");
+                            Console.ForegroundColor = ConsoleColor.Cyan;
                             Console.WriteLine("\n\n ##### New My droid #####\n" + NewDroid.Print());
                             ChoiceResult = menu2.MenuToPrint();
                             switch (ChoiceResult)
@@ -565,9 +559,11 @@ namespace Projekt
                         while (ChoiceExitFlag)
                         {
                             Console.Clear();
+                            Console.ForegroundColor = ConsoleColor.Yellow;
                             Console.WriteLine("\n\n\n--- My Hull: --- \n" + CurrentPlayer.MyShip.Hull.Print());
                             Console.WriteLine("Ship Weigth: " + CurrentPlayer.MyShip.GetCurrentWeigth() + " / " + CurrentPlayer.MyShip.Hull.MaxWeigth);
                             Console.WriteLine("Money: " + CurrentPlayer.MyMoney + "$  + (Sell old for: )" + (int)(CurrentPlayer.MyShip.Hull.Cost / 3) + "$");
+                            Console.ForegroundColor = ConsoleColor.Cyan;
                             Console.WriteLine("\n\n ##### New Hull ##### \n" + NewHull.Print());
                             ChoiceResult = menu2.MenuToPrint();
                             switch (ChoiceResult)
@@ -617,16 +613,20 @@ namespace Projekt
             Array.Copy(MainMenu, ShortList, 2 + player.MyShip.Hull.MaximumNumberOfWeapons);
             menu1._menu = ShortList;
 
+
             List<Weapon> TempList = new List<Weapon>();
             TempList = player.Localization.WeaponList;
 
             while (ExitFlag)
             {
-                for (int i = 0; i < 2 + player.MyShip.Weapons.Count; i++)
+                Console.WriteLine("\n          | Cost: " + Math.Pow(player.Localization.PlanetLvl, 2) * 100 + "$");
+                for (int i = 0; i < player.MyShip.Weapons.Count; i++)
                 {
                     Console.WriteLine("\n");
                 }
-                Console.WriteLine("\n ----- My Weapons ----- ");
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("\n ----- select a weapon to change from your weapons ----- ");
+                Console.ForegroundColor = ConsoleColor.Cyan;
                 PrintWeaponList(player.MyShip.Weapons);
                 result = menu1.MenuToPrint();
                 switch (result)
@@ -635,38 +635,18 @@ namespace Projekt
                         ExitFlag = false;
                         break;
                     case "refresh":
-                        string[] ChoiceMenu = { "Exit", "Buy" };
-                        string ChoiceResult;
-                        bool ChoiceExitFlag = true;
-                        PrintMenu menu2 = new PrintMenu();
-                        menu2._menu = ChoiceMenu;
-                        while (ChoiceExitFlag)
+                        if (player.MyMoney - (int)(Math.Pow(player.Localization.PlanetLvl, 2) * 100) < 0)
                         {
+                            Console.WriteLine("Not Enougth Money");
                             Console.Clear();
-                            Console.WriteLine("\n\n\n Refresh Cost: " + Math.Pow(player.Localization.PlanetLvl, 2) * 100 + "$");
-                            ChoiceResult = menu2.MenuToPrint();
-                            switch (ChoiceResult)
-                            {
-                                case "Exit":
-                                    ChoiceExitFlag = false;
-                                    break;
-                                case "Buy":
-                                    if (player.MyMoney - (int)(Math.Pow(player.Localization.PlanetLvl, 2) * 100) < 0)
-                                    {
-                                        Console.WriteLine("Not Enougth Money");
-                                        Console.Clear();
-                                    }
-                                    else
-                                    {
-                                        player.MyMoney -= (int)(Math.Pow(player.Localization.PlanetLvl, 2) * 100);
-                                        ChoiceExitFlag = false;
-                                        player.Localization.GenerateNewWeapons(); //generate list of wenpon base on players localization
-                                        TempList = player.Localization.WeaponList; //every planet have own weapon list
-                                        Console.WriteLine("Successful refresh");
-                                        Console.Clear();
-                                    }
-                                    break;
-                            }
+                        }
+                        else
+                        {
+                            player.MyMoney -= (int)(Math.Pow(player.Localization.PlanetLvl, 2) * 100);
+                            player.Localization.GenerateNewWeapons(); //generate list of wenpon base on players localization
+                            TempList = player.Localization.WeaponList; //every planet have own weapon list
+                            Console.WriteLine("Successful refresh");
+                            Console.Clear();
                         }
                         break;
                     case "weapon 1":
@@ -745,10 +725,15 @@ namespace Projekt
             PrintMenu menu2 = new PrintMenu();
             menu2._menu = ChoiceMenu;
             Console.Clear();
-            Console.WriteLine("\n\n\n--- My Old Weapon: --- \n" + CurrentPlayer.MyShip.Weapons[WeaponNumber].Print());
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("\n\n\n##### My Old Weapon: #####");
+            Console.WriteLine(CurrentPlayer.MyShip.Weapons[WeaponNumber].Print());
             Console.WriteLine("Ship Weigth: " + CurrentPlayer.MyShip.GetCurrentWeigth() + " / " + CurrentPlayer.MyShip.Hull.MaxWeigth);
             Console.WriteLine("Money: " + CurrentPlayer.MyMoney + "$  + (Sell old for: )" + (int)(CurrentPlayer.MyShip.Weapons[WeaponNumber].Cost / 4) + "$");
-            Console.WriteLine("\n\n ##### New Weapon ##### \n" + NewWeapon.Print());
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("\n\n##### New Weapon #####");
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine(NewWeapon.Print());
             ChoiceResult = menu2.MenuToPrint();
             switch (ChoiceResult)
             {
@@ -816,7 +801,9 @@ namespace Projekt
                 {
                     Console.WriteLine("\n");
                 }
-                Console.WriteLine("\n##### New Weapon#####");
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("\n##### select a new Weapon #####");
+                Console.ForegroundColor = ConsoleColor.Cyan;
                 PrintWeaponList(NewList);
                 SwitchWeaponResult = MenuSwitchWeapon.MenuToPrint();
                 switch (SwitchWeaponResult)
@@ -1178,14 +1165,14 @@ namespace Projekt
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine(slower.Name + " HP: " + slower.MyShip.Hull.Health + "/" + slower.MyShip.Hull.MaxHealth + "\n");
         }
-        public void MenuTravel(Player player)
+        public void MenuTravel(Player player , List<Dictionary<string, int>> Map)
         {
             string[] AllMap = new string[20];
             AllMap[0] = "exit";
             bool ExitFlag = true;
             string result;
             int i = 1;
-            foreach (string PlanetName in player.Localization.TravelMap.Keys)
+            foreach (string PlanetName in Map[player.Localization.DictionaryListNumber].Keys)
             {
                 AllMap[i] = PlanetName;
                 i++;
@@ -1207,7 +1194,7 @@ namespace Projekt
                     {
                         if (planet.Name == result)
                         {
-                            string temp = player.Travel(planet);
+                            string temp = player.Travel(planet , Map);
                             if (temp == "Successful travel")
                             {
                                 Console.Clear();
@@ -1280,6 +1267,12 @@ namespace Projekt
             if (player.MyShip.Weapons[weaponNumber].ToString() == "Projekt.WeakWeaponUpgrade" || player.MyShip.Weapons[weaponNumber].ToString() == "Projekt.HugeDamageUpgrade")
             {
                 Console.WriteLine(player.MyShip.Weapons[weaponNumber].Print() + " !!! have alleady upgrade !!! ");
+                Console.ReadKey();
+                Console.Clear();
+            }
+            else if(player.MyShip.Weapons[weaponNumber].ToString() == "Projekt.RocketLauncher")
+            {
+                Console.WriteLine(player.MyShip.Weapons[weaponNumber].Print() + " !!! Can not upgrade Rocket laucher !!! ");
                 Console.ReadKey();
                 Console.Clear();
             }

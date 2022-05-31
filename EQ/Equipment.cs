@@ -6,13 +6,20 @@ using System.Threading.Tasks;
 
 namespace Projekt
 {
-    class Equipment : IFEquipment
+    public class Equipment : IFEquipment
     {
         protected readonly int baseWeigth;
         protected float baseHealth; //Max 100
         protected readonly float baseReliable;
         protected readonly int cost;
 
+        public Equipment()
+        {
+            baseWeigth = 1;
+            baseHealth = 100;
+            baseReliable = (float)0.99;
+            cost = 1;
+        }
         public Equipment(int _weigth, float _haelth, float _reliable, int _cost)
         {
             if (_weigth < 0)

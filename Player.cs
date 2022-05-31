@@ -6,14 +6,22 @@ using System.Threading.Tasks;
 
 namespace Projekt
 {
-    internal class Player
+    public class Player
     {
         public string Name;
         public Ship MyShip;
         public int MyMoney;
         public int Score;
-        public Planet Localization;
+        public Planet ? Localization;
 
+        public Player()
+        {
+            MyShip = new Ship();
+            Name = "test";
+            MyMoney = 100;
+            Score = 0;
+            Localization = null;
+    }
         public Player(string _name , Ship _ship, int _money, Planet _localization, int _score = 0)
         {
             Name = _name;   
@@ -52,19 +60,19 @@ namespace Projekt
 
             return TotalDamage;
         }
-        public string Travel(Planet TargetPlanet)
+        public string Travel(Planet TargetPlanet , List<Dictionary<string , int>> Map)
         {
-            if (Localization.TravelMap.ContainsKey(TargetPlanet.Name))
+            if (Map[TargetPlanet.DictionaryListNumber].ContainsKey(TargetPlanet.Name))
             {
-                if (Localization.TravelMap[TargetPlanet.Name] > MyShip.Engine.JumpRange)
+                if (Map[TargetPlanet.DictionaryListNumber][TargetPlanet.Name] > MyShip.Engine.JumpRange)
                 {
-                    return "Engine has not enougth jump power: " + MyShip.Engine.JumpRange + " | need: " + Localization.TravelMap[TargetPlanet.Name];
+                    return "Engine has not enougth jump power: " + MyShip.Engine.JumpRange + " | need: " + Map[TargetPlanet.DictionaryListNumber][TargetPlanet.Name];
                 }
-                if(Localization.TravelMap[TargetPlanet.Name] > MyShip.FuelTank.Capacity)
+                if(Map[TargetPlanet.DictionaryListNumber][TargetPlanet.Name] > MyShip.FuelTank.Capacity)
                 {
-                    return "Fuel Tank has not enougth Fuel: " + MyShip.FuelTank.Capacity + " | need: " + Localization.TravelMap[TargetPlanet.Name];
+                    return "Fuel Tank has not enougth Fuel: " + MyShip.FuelTank.Capacity + " | need: " + Map[TargetPlanet.DictionaryListNumber][TargetPlanet.Name];
                 }
-                MyShip.FuelTank.Capacity -= Localization.TravelMap[TargetPlanet.Name];
+                MyShip.FuelTank.Capacity -= Map[TargetPlanet.DictionaryListNumber][TargetPlanet.Name];
                 Localization = TargetPlanet;
                 return "Successful travel";
             }

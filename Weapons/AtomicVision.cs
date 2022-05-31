@@ -6,10 +6,14 @@ using System.Threading.Tasks;
 
 namespace Projekt
 {
-    internal class AtomicVision : Weapon
+    public class AtomicVision : Weapon
     {
         private readonly float atackMultiplication;
 
+        public AtomicVision() : base()
+        {
+            atackMultiplication = 1;
+        }
         public AtomicVision(int atack, int weigth, float healt, float reliable, int cost, float _atackMultiplication) : base(atack, weigth, healt, reliable, cost)
         {
             if (_atackMultiplication < 0 || _atackMultiplication > 3)

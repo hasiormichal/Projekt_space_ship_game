@@ -6,11 +6,16 @@ using System.Threading.Tasks;
 
 namespace Projekt
 {
-    internal class Engine : Equipment
+    public class Engine : Equipment
     {
         private readonly int speed;
         private readonly int jumpRange;
 
+        public Engine () : base()
+        {
+            speed = 1;
+            jumpRange = 1;
+        }
         public Engine (int _weigth,float _health, float _reliable,int _cost, int _speed, int _jumprange): base(_weigth, _health, _reliable, _cost)
         {
             if (_speed < 0)

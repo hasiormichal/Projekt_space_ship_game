@@ -6,9 +6,14 @@ using System.Threading.Tasks;
 
 namespace Projekt
 {
-    internal class FragmentaryCannon : Weapon
+    public class FragmentaryCannon : Weapon
     {
         private readonly int bulletCount;
+
+        public FragmentaryCannon() : base()
+        {
+            bulletCount = 1;
+        }
         public FragmentaryCannon(int _atack, int _weigth, float _health, float _reliable, int _cost, int _bulletCount) : base(_atack, _weigth, _health, _reliable, _cost)
         {
             if (_bulletCount < 4 || _bulletCount > 10)

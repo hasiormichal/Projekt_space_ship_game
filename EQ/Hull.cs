@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Projekt
 {
-    internal class Hull: IFEquipment
+    public class Hull: IFEquipment
     {
         private readonly int armor;
         private readonly int maxHealth;
@@ -15,6 +15,15 @@ namespace Projekt
         private readonly int maxNumberOfWeapons;
         private readonly int cost;
 
+        public Hull()
+        {
+            armor = 1;
+            maxHealth = 100;
+            health = 100;
+            maxWeigth = 100;
+            maxNumberOfWeapons = 5;
+            cost = 1;
+        }
         public Hull(int _armor, int _maxhealth, int _maxweigth, int _maxweanpons, int _cost)
         {
             if (_armor < 0)

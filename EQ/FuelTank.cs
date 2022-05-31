@@ -6,11 +6,16 @@ using System.Threading.Tasks;
 
 namespace Projekt
 {
-    internal class FuelTank : Equipment
+    public class FuelTank : Equipment
     {
         private readonly int maxCapacity;
         private int capacity;
 
+        public FuelTank() : base()
+        {
+            maxCapacity = 1;
+            capacity = 1;
+        }
         public FuelTank(int _weigth, float _health, float _reliable, int _cost, int _maxcapacity) : base(_weigth, _health, _reliable, _cost)
         {
             if (_maxcapacity < 0)

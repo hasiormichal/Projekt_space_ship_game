@@ -7,9 +7,13 @@ using System.Threading.Tasks;
 
 namespace Projekt
 {
-    class Laser : Weapon
+    public class Laser : Weapon
     {
         private readonly int extraDamage  = 5;
+        public Laser() : base()
+        {
+            extraDamage = 5;
+        }
         public Laser(int atack, int weigth,float healt, float reliable, int cost, int _extradamage ) : base(atack , weigth,healt, reliable, cost)
         {
             if (_extradamage < 0 || _extradamage > 10)

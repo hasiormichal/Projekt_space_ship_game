@@ -6,9 +6,14 @@ using System.Threading.Tasks;
 
 namespace Projekt
 {
-    internal class Vortex : Weapon
+    public class Vortex : Weapon
     {
         private readonly int shieldPenetration;
+
+        public Vortex() : base()
+        {
+            shieldPenetration = 1;
+        }
         public Vortex(int atack, int weigth, float healt, float reliable, int cost, int _shieldPenetration) : base(atack, weigth, healt, reliable, cost)
         {
             if (_shieldPenetration < 0 || _shieldPenetration > 35)

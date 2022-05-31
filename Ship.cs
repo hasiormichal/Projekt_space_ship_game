@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Projekt
 {
-    class Ship
+    public class Ship
     {
         private Hull hull;
         private List<Weapon> weapons;
@@ -15,6 +15,15 @@ namespace Projekt
         private ShieldGenerator shieldGenerator;
         private Droid droid;
 
+        public Ship()
+        {
+            Hull = new Hull();
+            Weapons = new List<Weapon>();
+            Engine = new Engine();
+            FuelTank = new FuelTank();
+            ShieldGenerator = new ShieldGenerator();
+            Droid = new Droid();
+        }
         public Ship (Hull _hull, List<Weapon> _weapons, Engine _engine, 
                     FuelTank _fueltank, ShieldGenerator _shieldgenerator, Droid _droid)
         {

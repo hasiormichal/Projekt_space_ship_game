@@ -6,9 +6,14 @@ using System.Threading.Tasks;
 
 namespace Projekt
 {
-    internal class Tetronik : Weapon
+    public class Tetronik : Weapon
     {
         private readonly float bonusDamage;
+
+        public Tetronik() : base()
+        {
+            bonusDamage = (float)1;
+        }
         public Tetronik(int atack, int weigth, float healt, float reliable, int cost, float _bonusDamage) : base(atack, weigth, healt, reliable, cost)
         {
             if (_bonusDamage < 0 || _bonusDamage > 0.49)

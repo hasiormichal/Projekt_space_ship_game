@@ -1,129 +1,32 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using System;
 using System.Collections.Generic;
+using System.Xml.Serialization;
 
 namespace Projekt
 {
     class Program
     {
-
-        /*
-        public static void MenuChoicePrintShip(Ship shipV1)
+        private static Player Load()
         {
-            string[] MainMenu = { "engine", "fuel tank", "Shield generator", "droid", "hull", "weapon 1", "weapon 2",
-                "weapon 3","weapon 4","weapon 5","exit" };
-            bool ExitFlag = true;
-            string result;
-            PrintMenu menu1 = new PrintMenu();
-            menu1._menu = MainMenu;
-            while (ExitFlag)
-            {
-                result = menu1.MenuToPrint();
-                switch (result)
-                {
-                    case "engine":
-                        Console.WriteLine(shipV1.Engine.Print());
-                        Console.ReadKey();
-                        Console.Clear();
-                        break;
-                    case "fuel tank":
-                        Console.WriteLine(shipV1.FuelTank.Print());
-                        Console.ReadKey();
-                        Console.Clear();
-                        break;
-                    case "Shield generator":
-                        Console.WriteLine(shipV1.ShieldGenerator.Print());
-                        Console.ReadKey();
-                        Console.Clear();
-                        break;
-                    case "droid":
-                        Console.WriteLine(shipV1.Droid.Print());
-                        Console.ReadKey();
-                        Console.Clear();
-                        break;
-                    case "hull":
-                        Console.WriteLine(shipV1.Hull.Print());
-                        Console.ReadKey();
-                        Console.Clear();
-                        break;
-                    case "weapon 1":
-                        if(shipV1.Weapons.Count >= 1)
-                        {
-                            Console.WriteLine(shipV1.Weapons[0].Print());
-                            Console.ReadKey();
-                            Console.Clear();
-                        }
-                        else
-                        {
-                            Console.WriteLine("Ship do not 1 weapon slot");
-                            Console.ReadKey();
-                            Console.Clear();
-                        }
-
-                        break;
-                    case "weapon 2":
-                        if (shipV1.Weapons.Count >= 2)
-                        {
-                            Console.WriteLine(shipV1.Weapons[1].Print());
-                            Console.ReadKey();
-                            Console.Clear();
-                        }
-                        else
-                        {
-                            Console.WriteLine("Ship do not 2 weapon slot");
-                            Console.ReadKey();
-                            Console.Clear();
-                        }
-                        break;
-                    case "weapon 3":
-                        if (shipV1.Weapons.Count >= 3)
-                        {
-                            Console.WriteLine(shipV1.Weapons[2].Print());
-                            Console.ReadKey();
-                            Console.Clear();
-                        }
-                        else
-                        {
-                            Console.WriteLine("Ship do not 3 weapon slot");
-                            Console.ReadKey();
-                            Console.Clear();
-                        }
-                        break;
-                    case "weapon 4":
-                        if (shipV1.Weapons.Count >= 4)
-                        {
-                            Console.WriteLine(shipV1.Weapons[3].Print());
-                            Console.ReadKey();
-                            Console.Clear();
-                        }
-                        else
-                        {
-                            Console.WriteLine("Ship do not 4 weapon slot");
-                            Console.ReadKey();
-                            Console.Clear();
-                        }
-                        break;
-                    case "weapon 5":
-                        if (shipV1.Weapons.Count >= 5)
-                        {
-                            Console.WriteLine(shipV1.Weapons[4].Print());
-                            Console.ReadKey();
-                            Console.Clear();
-                        }
-                        else
-                        {
-                            Console.WriteLine("Ship do not 5 weapon slot");
-                            Console.ReadKey();
-                            Console.Clear();
-                        }
-                        break;
-                    case "exit":
-                        ExitFlag = false;
-                        break;
-                }
-            }
+            string file = "F:/Git Programy/c#/Projekt/Projekt/XMLFile1.xml";
+            Player listofa = new Player();
+            XmlSerializer formatter = new XmlSerializer(listofa.GetType());
+            FileStream aFile = new FileStream(file, FileMode.Open);
+            byte[] buffer = new byte[aFile.Length];
+            aFile.Read(buffer, 0, (int)aFile.Length);
+            MemoryStream stream = new MemoryStream(buffer);
+            return (Player)formatter.Deserialize(stream);
         }
-        */
+
+
+        private static void Save(Player listofa)
+        {
+            string path = "F:/Git Programy/c#/Projekt/Projekt/XMLFile1.xml";
+            FileStream outFile = File.Create(path);
+            XmlSerializer formatter = new XmlSerializer(listofa.GetType());
+            formatter.Serialize(outFile, listofa);
+        }
         static void Main(string[] args)
         {
             try
@@ -132,16 +35,18 @@ namespace Projekt
                 DictionaryMap WordMap = new DictionaryMap();
                 Factory factory = new Factory();
                 List<Planet> GlobalPlanetList = new List<Planet>();
-                Planet Ziemia = new Planet("Ziemia",20,15,WordMap.Earth,1);
-                Planet Mars = new Planet("Mars",25,20,WordMap.Mars,1);
-                Planet Jupiter = new Planet("Jupiter", 20, 20, WordMap.Jupiter, 1);
-                Planet Saturn = new Planet("Saturn", 30, 10, WordMap.Saturn, 2);
-                Planet Alfa3825 = new Planet("Alfa3825", 20, 20, WordMap.Alfa3825, 2);
-                Planet Pandora = new Planet("Pandora", 30, 15, WordMap.Pandora, 2);
-                Planet Celestia = new Planet("Celestia", 30, 25, WordMap.Celestia, 2);
-                Planet Orion47 = new Planet("Orion47", 20, 35, WordMap.Orion47, 2);
-                Planet Envito = new Planet("Envito", 30, 20, WordMap.Envito, 3);
-                Planet LastPlanet = new Planet("LastPlanet",45,45,WordMap.LastPlanet, 3);
+                List<Dictionary<string, int>> WordMapNumber = new List<Dictionary<string, int>>() { WordMap.Earth, WordMap.Mars, WordMap.Jupiter,
+                WordMap.Saturn, WordMap.Alfa3825,WordMap.Pandora,WordMap.Celestia,WordMap.Celestia, WordMap.Orion47,WordMap.Envito,WordMap.LastPlanet,};
+                Planet Ziemia = new Planet("Ziemia", 20, 15, 0, 1);
+                Planet Mars = new Planet("Mars", 25, 20, 1, 1);
+                Planet Jupiter = new Planet("Jupiter", 20, 20, 2, 1);
+                Planet Saturn = new Planet("Saturn", 30, 10, 3, 2);
+                Planet Alfa3825 = new Planet("Alfa3825", 20, 20, 4, 2);
+                Planet Pandora = new Planet("Pandora", 30, 15, 5, 2);
+                Planet Celestia = new Planet("Celestia", 30, 25, 6, 2);
+                Planet Orion47 = new Planet("Orion47", 20, 35, 7, 2);
+                Planet Envito = new Planet("Envito", 30, 20, 8, 3);
+                Planet LastPlanet = new Planet("LastPlanet", 45, 45, 9, 3);
 
                 GlobalPlanetList.Add(Ziemia);
                 GlobalPlanetList.Add(Mars);
@@ -169,7 +74,8 @@ namespace Projekt
                 Player Me = MyGenerator.GeneratePlayer(Ziemia);
                 Me.Name = "Dudus";
                 Me.MyMoney += 10000;
-
+                List <Player> ListToSave = new List<Player>();
+                ListToSave.Add(Me);
                 string[] MainMenu = { "exit", "Show my ship", "Repair", "Buy Fuel", "Buy Rockets","Buy Weapon", "Buy Eq","Travel", "figth","upgrade weapon","" +
                         "upgrade planet"};
                 bool ExitFlag = true;
@@ -179,9 +85,14 @@ namespace Projekt
                 while (ExitFlag)
                 {
                     Console.Clear();
-                    Console.WriteLine("\n\n\n\n\n\n\n\n\n\n\n\n\n\nMy money: " + Me.MyMoney + "$");
+                    Console.WriteLine("\n\n\n\n\n\n\n\n\n\n               | Cost: " + (int)(1000 + Math.Pow(Me.Localization.PlanetLvl, 2) * 1500));
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("\nMy money: " + Me.MyMoney + "$");
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine("Planet: " + Me.Localization.Name + " | Plenet lvl: " + Me.Localization.PlanetLvl);
+                    Console.ForegroundColor = ConsoleColor.Cyan;
                     Console.WriteLine("Fuel:" + Me.MyShip.FuelTank.Capacity + "/" + Me.MyShip.FuelTank.MaxCapacity +
-                        "| Refile cost: " + Me.MyShip.FuelTank.FuelRefile(Me.Localization.FuelCost));
+                        " | Refile cost: " + Me.MyShip.FuelTank.FuelRefile(Me.Localization.FuelCost));
                     int TotalRocketCost = 0;
                     RocketLauncher tempRocket = new RocketLauncher(10, 30, 100, (float)0.9, 100, 30);
                     foreach (Weapon weapons in Me.MyShip.Weapons)
@@ -245,55 +156,39 @@ namespace Projekt
                             menuFunctions.MenuBuyEQ(Me.Localization, Me);
                             break;
                         case "Travel":
-                            menuFunctions.MenuTravel(Me);
-                            
+                            menuFunctions.MenuTravel(Me , WordMapNumber);
+
                             break;
                         case "figth":
                             menuFunctions.MenuFigth(Me);
                             break;
                         case "exit":
-                            ExitFlag = false;
+                            Console.Clear();
+                            Console.WriteLine("Enter y/n to confirm.");
+                            var exit = Console.ReadKey();
+                            Save(Me);
+                            if (exit.Key == ConsoleKey.Y)
+                            {
+                                ExitFlag = false;
+                            }
                             break;
                         case "upgrade weapon":
                             menuFunctions.MenuUpgradeWeapon(Me);
                             break;
                         case "upgrade planet":
-                            Console.Clear();
-                            string[] ChoiceMenu = { "Exit","upgrage" };
-                            string ChoiceResult;
-                            bool ChoiceExitFlag = true;
-                            PrintMenu menu2 = new PrintMenu();
-                            menu2._menu = ChoiceMenu;
-                            
-                            while (ChoiceExitFlag)
+                            if (Me.MyMoney < (int)(1000 + Math.Pow(Me.Localization.PlanetLvl, 2) * 1500))
                             {
+                                Console.WriteLine("Not enougth money");
+                                Console.ReadKey();
                                 Console.Clear();
-                                Console.WriteLine("\n\n\nUpgrade Cost: " + (int)(1000+ Math.Pow(Me.Localization.PlanetLvl, 2) * 1500));
-                                Console.WriteLine("My money: " + Me.MyMoney);
-                                ChoiceResult = menu2.MenuToPrint();
-                                switch (ChoiceResult)
-                                {
-                                    case "Exit":
-                                        ChoiceExitFlag = false;
-                                        break;
-                                    case "upgrage":
-                                        if(Me.MyMoney < (int)(1000 + Math.Pow(Me.Localization.PlanetLvl, 2) * 1500))
-                                        {
-                                            Console.WriteLine("Not enougth money");
-                                            Console.ReadKey();
-                                            Console.Clear();
-                                        }
-                                        else
-                                        {
-                                            Me.MyMoney -= (int)(1000 + Math.Pow(Me.Localization.PlanetLvl, 2) * 1500);
-                                            Me.Localization.PlanetLvl++;
-                                            Console.WriteLine("Succesfull upgrade");
-                                            Console.ReadKey();
-                                            Console.Clear();
-                                            ChoiceExitFlag = false;
-                                        }
-                                        break;
-                                }
+                            }
+                            else
+                            {
+                                Me.MyMoney -= (int)(1000 + Math.Pow(Me.Localization.PlanetLvl, 2) * 1500);
+                                Me.Localization.PlanetLvl++;
+                                Console.WriteLine("Succesfull upgrade");
+                                Console.ReadKey();
+                                Console.Clear();
                             }
                             break;
 

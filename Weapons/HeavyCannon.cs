@@ -6,11 +6,16 @@ using System.Threading.Tasks;
 
 namespace Projekt
 {
-    internal class HeavyCannon : Weapon
+    public class HeavyCannon : Weapon
     {
         private int armorPenetration;
         private int BulletCount = 5;
 
+        public HeavyCannon(): base()
+        {
+            armorPenetration = 1;
+            BulletCount = 5;
+        }
         public HeavyCannon(int _atack,int _weigth, float _health, float _reliable, int _cost, int _armorPenetration) : base(_atack,_weigth, _health, _reliable, _cost)
         {
             if (_armorPenetration < 0 || _armorPenetration > 25)
