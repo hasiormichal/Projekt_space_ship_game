@@ -26,7 +26,7 @@ namespace Projekt
             int atack;
             if (TargetShip.ShieldGenerator.BaseHealth > 0)
             {
-                atack = (this.BaseAtack) - ((this.BaseAtack)*TargetShip.ShieldGenerator.Shield/100) - TargetShip.Hull.Armor;
+                atack = this.BaseAtack - (this.BaseAtack * TargetShip.ShieldGenerator.Shield/100) - TargetShip.Hull.Armor;
             }
             else
             {

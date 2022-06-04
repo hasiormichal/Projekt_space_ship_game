@@ -11,9 +11,9 @@ namespace Projekt
         private readonly int bulletCount;
         public FragmentaryCannon(int _atack, int _weigth, float _health, float _reliable, int _cost, int _bulletCount) : base(_atack, _weigth, _health, _reliable, _cost)
         {
-            if (_bulletCount < 4 || _bulletCount > 10)
+            if (_bulletCount < 1 || _bulletCount > 10)
             {
-                throw new ArgumentException(String.Format("{0} is < 0 or > 20 in: {1}", _bulletCount, this.ToString()), "BulletCount");
+                throw new ArgumentException(String.Format("{0} is < 4 or > 10 in: {1}", _bulletCount, this.ToString()), "BulletCount");
             }
             else
             {
@@ -26,12 +26,15 @@ namespace Projekt
             if (TargetShip.ShieldGenerator.BaseHealth > 0)
             {
                 atack = (this.BaseAtack / bulletCount) -  (this.BaseAtack / bulletCount*TargetShip.ShieldGenerator.Shield/100) - TargetShip.Hull.Armor;
+                if(atack <= 0) return 0;
+                else return atack * bulletCount;
             }
             else
             {
                 atack = this.BaseAtack / bulletCount - TargetShip.Hull.Armor;
+                if (atack <= 0) return 0;
+                else return atack * bulletCount;
             }
-            return atack * bulletCount;
         }
         public override int DamageShip(Ship TargetShip, int atack)
         {
@@ -39,10 +42,12 @@ namespace Projekt
             if (TargetShip.ShieldGenerator.BaseHealth > 0)
             {
                 CannonAtack = (this.BaseAtack / bulletCount) - (this.BaseAtack / bulletCount * TargetShip.ShieldGenerator.Shield / 100) - TargetShip.Hull.Armor;
+                if (atack <= 0) CannonAtack =0;
             }
             else
             {
                 CannonAtack = this.BaseAtack / bulletCount - TargetShip.Hull.Armor;
+                if (atack <= 0) CannonAtack =0;
             }
             for (int i = 0; i < bulletCount; i++)
             {

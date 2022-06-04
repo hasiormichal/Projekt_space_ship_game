@@ -112,6 +112,10 @@ namespace Projekt
             {
                 TargetShip.Hull.Health = 0;
             }
+            else if (TargetShip.Hull.Health - atack >= TargetShip.Hull.MaxHealth)
+            {
+                TargetShip.Hull.Health = TargetShip.Hull.MaxHealth;
+            }
             else
             {
                 TargetShip.Hull.Health -= atack;

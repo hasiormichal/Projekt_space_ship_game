@@ -27,24 +27,29 @@ namespace Projekt
             int atack;
             if (TargetShip.ShieldGenerator.BaseHealth > 0)
             {
-                atack = (this.BaseAtack / BulletCount) - (this.BaseAtack / 5* TargetShip.ShieldGenerator.Shield/100) - (TargetShip.Hull.Armor - armorPenetration);
+                atack = (this.BaseAtack / BulletCount) - (this.BaseAtack / BulletCount * TargetShip.ShieldGenerator.Shield/100) - (TargetShip.Hull.Armor - armorPenetration);
+                if (atack <= 0) return 0;
+                else return atack * BulletCount;
             }
             else
             {
                atack = this.BaseAtack / BulletCount - (TargetShip.Hull.Armor - armorPenetration);
+                if (atack <= 0) return 0;
+                else return atack * BulletCount;
             }
-            return atack * BulletCount;
         }
         public override int DamageShip(Ship TargetShip , int atack)
         {
             int CannonAtack;
             if (TargetShip.ShieldGenerator.BaseHealth > 0)
             {
-                CannonAtack = (this.BaseAtack / BulletCount) - (this.BaseAtack / 5 * TargetShip.ShieldGenerator.Shield / 100) - (TargetShip.Hull.Armor - armorPenetration);
+                CannonAtack = (this.BaseAtack / BulletCount) - (this.BaseAtack / BulletCount * TargetShip.ShieldGenerator.Shield / 100) - (TargetShip.Hull.Armor - armorPenetration);
+                if (atack <= 0) CannonAtack= 0;
             }
             else
             {
                 CannonAtack = this.BaseAtack / BulletCount - (TargetShip.Hull.Armor - armorPenetration);
+                if (atack <= 0) CannonAtack =0;
             }
 
             for (int i = 0; i< BulletCount; i++)

@@ -40,8 +40,8 @@ namespace Projekt
             {
                 TotalDamage += Weapon.GetAtack(TargetShip);
             }
-
-            if(MyShip.Hull.Health > MyShip.Hull.MaxHealth)
+            /*
+            if(MyShip.Hull.Health + MyShip.Droid.RepairPower > MyShip.Hull.MaxHealth)
             {
                 MyShip.Hull.Health = MyShip.Hull.MaxHealth;
             }
@@ -49,7 +49,7 @@ namespace Projekt
             {
                 MyShip.Hull.Health += MyShip.Droid.RepairPower;
             }
-
+            */
             return TotalDamage;
         }
         public string Travel(Planet TargetPlanet)

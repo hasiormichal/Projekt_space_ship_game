@@ -6,6 +6,15 @@ namespace Projekt
 {
     class Program
     {
+        async static void SaveScore(List <string> list, string path)
+        {
+            string StringToSave = "---\n";
+            foreach (var item in list)
+            {
+                StringToSave += item.ToString() +"\n";
+            }
+            await File.WriteAllTextAsync(path, StringToSave);
+        }
         static void Main(string[] args)
         {
             try
@@ -25,6 +34,24 @@ namespace Projekt
                 Planet Envito = new Planet("Envito", 30, 20, WordMap.Envito, 3);
                 Planet LastPlanet = new Planet("LastPlanet",45,45,WordMap.LastPlanet, 3);
 
+                List<String> Score = new List<string>();
+
+                //SaveScore(Score, "F:/Git Programy/c#/Projekt/Projekt/score.txt");
+                string[] lines = System.IO.File.ReadAllLines("F:/Git Programy/c#/Projekt/Projekt/score.txt");
+               for(int i = 1; i < lines.Length; i++)
+                {
+                    Score.Add(lines[i]);
+                }
+                /*
+                for (int i=1; i<lines.Count(); i++)
+                {
+                    int position = lines[i].IndexOf(",", 2);
+                    string temp = lines[i].Substring(1, position-1);
+                   // temp = lines[i].Substring(position + 1, lines[i].IndexOf("]", position));
+                    int number = Int32.Parse(lines[i].Substring(position + 1, lines[i].IndexOf("]", position)-1- position));
+                    Score[temp] = number;
+                }
+               */
                 GlobalPlanetList.Add(Ziemia);
                 GlobalPlanetList.Add(Mars);
                 GlobalPlanetList.Add(Jupiter);
@@ -48,9 +75,18 @@ namespace Projekt
                     planet.EnemyPlayer.Add(tempPlayer);
                 }
 
+                Console.WriteLine("----- Welcome in Galaxy Ship Game -----\n Enter your Name:\n ");
+                string ? name = Console.ReadLine();
+                if(name == null)
+                {
+                    Console.WriteLine("error\n");
+                }
+                Console.Clear();
+
                 Player Me = MyGenerator.GeneratePlayer(Ziemia);
-                Me.Name = "Dudus";
+                Me.Name = name;
                 Me.MyMoney += 10000;
+                Me.Score = 0;
 
                 string[] MainMenu = { "exit", "Show my ship", "Repair", "Buy Fuel", "Buy Rockets","Buy Weapon", "Buy Eq","Travel", "figth","upgrade weapon","" +
                         "upgrade planet"};
@@ -137,6 +173,15 @@ namespace Projekt
                             break;
                         case "figth":
                             menuFunctions.MenuFigth(Me);
+                            if(Me.MyShip.Hull.Health <= 0)
+                            {
+                                Console.Clear();
+                                Console.WriteLine("You lose!!! \n Score: {0}", Me.Score);
+                                //Score.Add(Me.Name, Me.Score);
+                                Score.Add(Me.Name + " " + Me.Score);
+                                SaveScore(Score, "F:/Git Programy/c#/Projekt/Projekt/score.txt");
+                                ExitFlag = false;
+                            }
                             break;
                         case "exit":
                             Console.Clear();
@@ -144,6 +189,8 @@ namespace Projekt
                             var exit = Console.ReadKey();
                             if (exit.Key == ConsoleKey.Y)
                             {
+                                Score.Add(Me.Name + " " + Me.Score);
+                                SaveScore(Score, "F:/Git Programy/c#/Projekt/Projekt/score.txt");
                                 ExitFlag = false;
                             }
                             break;

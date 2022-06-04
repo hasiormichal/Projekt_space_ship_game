@@ -94,6 +94,7 @@ namespace Projekt
 
                 //rocket launcher lost 3 rocket per atack
             }
+            
             if(TargetShip.Droid.BaseHealth > 0)
             {
                 if(TargetShip.hull.Health + TargetShip.droid.RepairPower >= TargetShip.hull.MaxHealth)

@@ -28,6 +28,10 @@ namespace Projekt
         {
             return MyWeapon.PrintName() + " Damage upgrade";
         }
+        public override int Repair()
+        {
+            return (int)((100.0 - BaseHealth) * Cost / 1000);
+        }
     }
 }
 

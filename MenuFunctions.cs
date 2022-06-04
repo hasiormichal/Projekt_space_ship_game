@@ -605,22 +605,18 @@ namespace Projekt
 
         public void MenuBuyWeapon(Player player)
         {
-            string[] MainMenu = { "exit", "refresh","weapon 1", "weapon 2",
+            string[] MainMenu = { "exit","weapon 1", "weapon 2",
                 "weapon 3","weapon 4","weapon 5"};
             bool ExitFlag = true;
             string result;
             PrintMenu menu1 = new PrintMenu();
-            string[] ShortList = new string[2 + player.MyShip.Hull.MaximumNumberOfWeapons];
-            Array.Copy(MainMenu, ShortList, 2 + player.MyShip.Hull.MaximumNumberOfWeapons);
+            string[] ShortList = new string[1 + player.MyShip.Hull.MaximumNumberOfWeapons];
+            Array.Copy(MainMenu, ShortList, 1 + player.MyShip.Hull.MaximumNumberOfWeapons);
             menu1._menu = ShortList;
 
 
-            List<Weapon> TempList = new List<Weapon>();
-            TempList = player.Localization.WeaponList;
-
             while (ExitFlag)
             {
-                Console.WriteLine("\n          | Cost: " + Math.Pow(player.Localization.PlanetLvl, 2) * 100 + "$");
                 for (int i = 0; i < player.MyShip.Weapons.Count; i++)
                 {
                     Console.WriteLine("\n");
@@ -635,35 +631,21 @@ namespace Projekt
                     case "exit":
                         ExitFlag = false;
                         break;
-                    case "refresh":
-                        if (player.MyMoney - (int)(Math.Pow(player.Localization.PlanetLvl, 2) * 100) < 0)
-                        {
-                            Console.WriteLine("Not Enougth Money");
-                            Console.Clear();
-                        }
-                        else
-                        {
-                            player.MyMoney -= (int)(Math.Pow(player.Localization.PlanetLvl, 2) * 100);
-                            player.Localization.GenerateNewWeapons(); //generate list of wenpon base on players localization
-                            TempList = player.Localization.WeaponList; //every planet have own weapon list
-                            Console.WriteLine("Successful refresh");
-                            Console.Clear();
-                        }
-                        break;
+
                     case "weapon 1":
-                        PrintAvailableWeapon(player, TempList, 0);
+                        PrintAvailableWeapon(player, 0);
                         break;
                     case "weapon 2":
-                        PrintAvailableWeapon(player, TempList, 1);
+                        PrintAvailableWeapon(player, 1);
                         break;
                     case "weapon 3":
-                        PrintAvailableWeapon(player, TempList, 2);
+                        PrintAvailableWeapon(player, 2);
                         break;
                     case "weapon 4":
-                        PrintAvailableWeapon(player, TempList, 3);
+                        PrintAvailableWeapon(player, 3);
                         break;
                     case "weapon 5":
-                        PrintAvailableWeapon(player, TempList, 4);
+                        PrintAvailableWeapon(player, 4);
                         break;
 
                 }
@@ -671,9 +653,14 @@ namespace Projekt
         }
         private void PrintWeaponList(List<Weapon> MyList)
         {
+            int i = 1;
             foreach (Weapon weapon in MyList)
             {
+                Console.ForegroundColor = ConsoleColor.DarkYellow;
+                Console.WriteLine("Weapon nr. {0}", i);
+                Console.ForegroundColor = ConsoleColor.Cyan;
                 Console.WriteLine(weapon.Print() + "\n");
+                i++;
             }
         }
         private bool CheckWeponLimits(Player player, Weapon NewWeapon, int WeaponNumber)
@@ -730,9 +717,10 @@ namespace Projekt
             Console.WriteLine("\n\n\n##### My Old Weapon: #####");
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine(CurrentPlayer.MyShip.Weapons[WeaponNumber].Print());
+            Console.ForegroundColor = ConsoleColor.Blue;
             Console.WriteLine("Ship Weigth: " + CurrentPlayer.MyShip.GetCurrentWeigth() + " / " + CurrentPlayer.MyShip.Hull.MaxWeigth);
             Console.WriteLine("Money: " + CurrentPlayer.MyMoney + "$  + (Sell old for: )" + (int)(CurrentPlayer.MyShip.Weapons[WeaponNumber].Cost / 4) + "$");
-            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
             Console.WriteLine("\n\n##### New Weapon #####");
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine(NewWeapon.Print());
@@ -785,9 +773,9 @@ namespace Projekt
             }
             return false;
         }
-        private void PrintAvailableWeapon(Player player, List<Weapon> NewList, int SelectedWeapon)
+        private void PrintAvailableWeapon(Player player, int SelectedWeapon)
         {
-            string[] SwitchWeaponMenu = { "exit","weapon 1", "weapon 2",
+            string[] SwitchWeaponMenu = { "exit", "refresh","weapon 1", "weapon 2",
                 "weapon 3","weapon 4","weapon 5"};
             bool SwitchWeaponFlag = true;
             string SwitchWeaponResult;
@@ -796,37 +784,60 @@ namespace Projekt
 
             while (SwitchWeaponFlag)
             {
-                string[] ShortSwitchWeaponMenu = new string[1 + NewList.Count()];
-                Array.Copy(SwitchWeaponMenu, ShortSwitchWeaponMenu, 1 + NewList.Count());
+
+                List<Weapon> PlanetWeapon = new List<Weapon>();
+                PlanetWeapon = player.Localization.WeaponList;
+
+                string[] ShortSwitchWeaponMenu = new string[2 + PlanetWeapon.Count()];
+                Array.Copy(SwitchWeaponMenu, ShortSwitchWeaponMenu, 2 + PlanetWeapon.Count());
                 MenuSwitchWeapon._menu = ShortSwitchWeaponMenu;
-                for (int i = 0; i < 1 + NewList.Count; i++)
+                Console.WriteLine("\n          | Cost: " + Math.Pow(player.Localization.PlanetLvl, 2) * 100 + "$");
+
+                for (int i = 2; i < 1 + PlanetWeapon.Count; i++)
                 {
                     Console.WriteLine("\n");
                 }
+
                 Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine("\n##### select a new Weapon #####");
+                Console.WriteLine("\n##### select a new Weapon from shop #####");
                 Console.ForegroundColor = ConsoleColor.Cyan;
-                PrintWeaponList(NewList);
+                PrintWeaponList(PlanetWeapon);
                 SwitchWeaponResult = MenuSwitchWeapon.MenuToPrint();
+                //Console.ForegroundColor= ConsoleColor.DarkYellow;
                 switch (SwitchWeaponResult)
                 {
                     case "exit":
                         SwitchWeaponFlag = false;
                         break;
+                    case "refresh":
+                        if (player.MyMoney - (int)(Math.Pow(player.Localization.PlanetLvl, 2) * 100) < 0)
+                        {
+                            Console.WriteLine("Not Enougth Money");
+                            Console.Clear();
+                        }
+                        else
+                        {
+                            player.MyMoney -= (int)(Math.Pow(player.Localization.PlanetLvl, 2) * 100);
+                            player.Localization.GenerateNewWeapons(); //generate list of wenpon base on players localization
+                            PlanetWeapon = player.Localization.WeaponList; //every planet have own weapon list
+                            Console.WriteLine("Successful refresh");
+                            Console.Clear();
+                        }
+                        break;
                     case "weapon 1":
                         if (SelectedWeapon + 1 > player.MyShip.Weapons.Count()) //+1 cause selectexWeapon is an index but Count return number of weapon(not intex of lastest weapon)
                         {
-                            if (BuyNewWeapon(player, NewList[0]))
+                            if (BuyNewWeapon(player, PlanetWeapon[0]))
                             {
-                                NewList.RemoveAt(0);
+                                PlanetWeapon.RemoveAt(0);
                                 break;
                             }
                         }
                         else
                         {
-                            if (SwitchWeapon(player, NewList[0], SelectedWeapon))
+                            if (SwitchWeapon(player, PlanetWeapon[0], SelectedWeapon))
                             {
-                                NewList.RemoveAt(0);
+                                PlanetWeapon.RemoveAt(0);
                                 break;
                             }
                         }
@@ -834,17 +845,17 @@ namespace Projekt
                     case "weapon 2":
                         if (SelectedWeapon + 1 > player.MyShip.Weapons.Count())
                         {
-                            if (BuyNewWeapon(player, NewList[1]))
+                            if (BuyNewWeapon(player, PlanetWeapon[1]))
                             {
-                                NewList.RemoveAt(1);
+                                PlanetWeapon.RemoveAt(1);
                                 break;
                             }
                         }
                         else
                         {
-                            if (SwitchWeapon(player, NewList[1], SelectedWeapon))
+                            if (SwitchWeapon(player, PlanetWeapon[1], SelectedWeapon))
                             {
-                                NewList.RemoveAt(1);
+                                PlanetWeapon.RemoveAt(1);
                                 break;
                             }
                         }
@@ -852,17 +863,17 @@ namespace Projekt
                     case "weapon 3":
                         if (SelectedWeapon + 1 > player.MyShip.Weapons.Count())
                         {
-                            if (BuyNewWeapon(player, NewList[2]))
+                            if (BuyNewWeapon(player, PlanetWeapon[2]))
                             {
-                                NewList.RemoveAt(2);
+                                PlanetWeapon.RemoveAt(2);
                                 break;
                             }
                         }
                         else
                         {
-                            if (SwitchWeapon(player, NewList[2], SelectedWeapon))
+                            if (SwitchWeapon(player, PlanetWeapon[2], SelectedWeapon))
                             {
-                                NewList.RemoveAt(2);
+                                PlanetWeapon.RemoveAt(2);
                                 break;
                             }
                         }
@@ -870,17 +881,17 @@ namespace Projekt
                     case "weapon 4":
                         if (SelectedWeapon + 1 > player.MyShip.Weapons.Count())
                         {
-                            if (BuyNewWeapon(player, NewList[3]))
+                            if (BuyNewWeapon(player, PlanetWeapon[3]))
                             {
-                                NewList.RemoveAt(3);
+                                PlanetWeapon.RemoveAt(3);
                                 break;
                             }
                         }
                         else
                         {
-                            if (SwitchWeapon(player, NewList[3], SelectedWeapon))
+                            if (SwitchWeapon(player, PlanetWeapon[3], SelectedWeapon))
                             {
-                                NewList.RemoveAt(3);
+                                PlanetWeapon.RemoveAt(3);
                                 break;
                             }
                         }
@@ -888,17 +899,17 @@ namespace Projekt
                     case "weapon 5":
                         if (SelectedWeapon + 1 > player.MyShip.Weapons.Count())
                         {
-                            if (BuyNewWeapon(player, NewList[4]))
+                            if (BuyNewWeapon(player, PlanetWeapon[4]))
                             {
-                                NewList.RemoveAt(4);
+                                PlanetWeapon.RemoveAt(4);
                                 break;
                             }
                         }
                         else
                         {
-                            if (SwitchWeapon(player, NewList[4], SelectedWeapon))
+                            if (SwitchWeapon(player, PlanetWeapon[4], SelectedWeapon))
                             {
-                                NewList.RemoveAt(4);
+                                PlanetWeapon.RemoveAt(4);
                                 break;
                             }
                         }
@@ -937,8 +948,26 @@ namespace Projekt
                 Console.ForegroundColor = ConsoleColor.Cyan;
                 Console.WriteLine("\n                     Total cost: {0}$", player1.RepairAll());
                 Console.WriteLine("\n\n\n\n\n");
+                int MaxDamage =0;
+                foreach (Weapon weapons in player1.MyShip.Weapons)
+                {
+                    MaxDamage += weapons.BaseAtack;
+                }
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("My Ship: Max Damage: {0} \nHp: {1}/{2} | Shield: {3} | Droid Power: {4}\n", MaxDamage, player1.MyShip.Hull.Health,
+                    MaxDamage, player1.MyShip.Hull.MaxHealth, MaxDamage, player1.MyShip.ShieldGenerator.Shield, MaxDamage, player1.MyShip.Droid.RepairPower);
+                Console.ForegroundColor = ConsoleColor.Cyan;
                 foreach (Player Enemy in player1.Localization.EnemyPlayer)
                 {
+                    Enemy.MyShip.Hull.Health = Enemy.MyShip.Hull.MaxHealth;
+                    Enemy.MyShip.Engine.BaseHealth = 100;
+                    Enemy.MyShip.FuelTank.BaseHealth = 100;
+                    Enemy.MyShip.ShieldGenerator.BaseHealth = 100;
+                    Enemy.MyShip.Droid.BaseHealth = 100;
+                    foreach (Weapon weapons in Enemy.MyShip.Weapons)
+                    {
+                        weapons.BaseHealth = 100;
+                    }
                     Console.WriteLine("##### Enemy Ship nr. {0} #####", i);
                     Console.WriteLine("Ship HP: " + Enemy.MyShip.Hull.Health + "/" + Enemy.MyShip.Hull.MaxHealth + " | " + "Droid: " + Enemy.MyShip.Droid.RepairPower
                         + " | " + "Shield Generator: " + Enemy.MyShip.ShieldGenerator.Shield + " | " + "Armour: " + Enemy.MyShip.Hull.Armor);
@@ -949,7 +978,11 @@ namespace Projekt
                     i++;
                     Console.WriteLine("\n");
                 }
-
+                if (player1.MyShip.Hull.Health <=0)
+                {
+                    ExitFlag = false;
+                    continue;
+                }
                 ChoiceResult = menu2.MenuToPrint();
                 switch (ChoiceResult)
                 {
@@ -988,27 +1021,42 @@ namespace Projekt
                         break;
                     case "Figth enemy 1":
                         Figth(player1, player1.Localization.EnemyPlayer[0]);
-                        player1.Localization.EnemyPlayer[0] = TempGenerator.GeneratePlayer(player1.Localization);
+                        if(player1.Localization.EnemyPlayer[0].MyShip.Hull.Health <= 0)
+                        {
+                            player1.Localization.EnemyPlayer[0] = TempGenerator.GeneratePlayer(player1.Localization);
+                        }
                         Console.ReadKey();
                         break;
                     case "Figth enemy 2":
                         Figth(player1, player1.Localization.EnemyPlayer[1]);
-                        player1.Localization.EnemyPlayer[1] = TempGenerator.GeneratePlayer(player1.Localization);
+                        if (player1.Localization.EnemyPlayer[1].MyShip.Hull.Health <= 0)
+                        {
+                            player1.Localization.EnemyPlayer[1] = TempGenerator.GeneratePlayer(player1.Localization);
+                        }
                         Console.ReadKey();
                         break;
                     case "Figth enemy 3":
                         Figth(player1, player1.Localization.EnemyPlayer[2]);
-                        player1.Localization.EnemyPlayer[2] = TempGenerator.GeneratePlayer(player1.Localization);
+                        if (player1.Localization.EnemyPlayer[2].MyShip.Hull.Health <= 0)
+                        {
+                            player1.Localization.EnemyPlayer[2] = TempGenerator.GeneratePlayer(player1.Localization);
+                        }
                         Console.ReadKey();
                         break;
                     case "Figth enemy 4":
                         Figth(player1, player1.Localization.EnemyPlayer[3]);
-                        player1.Localization.EnemyPlayer[3] = TempGenerator.GeneratePlayer(player1.Localization);
+                        if (player1.Localization.EnemyPlayer[3].MyShip.Hull.Health <= 0)
+                        {
+                            player1.Localization.EnemyPlayer[3] = TempGenerator.GeneratePlayer(player1.Localization);
+                        }
                         Console.ReadKey();
                         break;
                     case "Figth enemy 5":
                         Figth(player1, player1.Localization.EnemyPlayer[4]);
-                        player1.Localization.EnemyPlayer[4] = TempGenerator.GeneratePlayer(player1.Localization);
+                        if (player1.Localization.EnemyPlayer[4].MyShip.Hull.Health <= 0)
+                        {
+                            player1.Localization.EnemyPlayer[4] = TempGenerator.GeneratePlayer(player1.Localization);
+                        }
                         Console.ReadKey();
                         break;
                 }
@@ -1153,8 +1201,9 @@ namespace Projekt
             string TempString = faster.MyShip.UseWeapons(slower.MyShip);
             if (slower.MyShip.Hull.Health <= 0)
             {
-                TempString = faster.Name + " win the figth !!!";
+                TempString = faster.Name + " win the figth !!!\nEarned " + slower.MyMoney + "$";
                 faster.MyMoney += slower.MyMoney;
+                faster.Score += slower.MyMoney;
                 return TempString;
 
             }
@@ -1163,7 +1212,7 @@ namespace Projekt
         private static void PrintFigthResult(Player faster, Player slower, string result)
         {
             Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine("-----   " + faster.Name + "  -----\n" + result + " ( -" + faster.MyShip.Droid.RepairPower + " Droid)");
+            Console.WriteLine("-----   " + faster.Name + "  -----\n" + result + " ( -" + slower.MyShip.Droid.RepairPower + " Droid)");
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine(slower.Name + " HP: " + slower.MyShip.Hull.Health + "/" + slower.MyShip.Hull.MaxHealth + "\n");
         }

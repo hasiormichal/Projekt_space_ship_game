@@ -28,7 +28,7 @@ namespace Projekt
                     new AtomicVision(100,100,100,(float)0.99,50000,(float)2),
                     new AtomicVision(100,100,100,(float)0.99,50000,(float)2),
                     }
-                    , new Engine(50, 100, (float)0.99, 20000, 750, 50), new FuelTank(50, 100, (float)0.99, 10000, 50), new ShieldGenerator(50, 100, (float)0.99, 20000, 50),
+                    , new Engine(50, 100, (float)0.99, 20000, 350, 50), new FuelTank(50, 100, (float)0.99, 10000, 50), new ShieldGenerator(50, 100, (float)0.99, 20000, 50),
                     new Droid(50, 100, (float)0, 99, 50)), //end ship EQ
                     200000, GlobalPlanetList[8]
                     ); 
