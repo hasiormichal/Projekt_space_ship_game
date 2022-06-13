@@ -71,7 +71,7 @@ namespace Projekt
         }
         public Weapon RandomWeapon (int lvl) 
         {
-            int seed = random.Next(50-10*(5-lvl),50+10*lvl);
+            int seed = random.Next(50-10*(6-lvl),50+10*(lvl-1));
             
             if(seed <= BaseProbability.BaseFragmentaryCannonProbability)
             {

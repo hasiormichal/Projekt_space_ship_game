@@ -37,7 +37,7 @@ namespace Projekt
         }
         public override string PrintName()
         {
-            return MyWeapon.PrintName() + " Double Shot Upgrade";
+            return "Double Shot Upgrade " + MyWeapon.PrintName();
         }
         public override int Repair()
         {

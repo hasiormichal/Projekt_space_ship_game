@@ -954,8 +954,8 @@ namespace Projekt
                     MaxDamage += weapons.BaseAtack;
                 }
                 Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine("My Ship: Max Damage: {0} \nHp: {1}/{2} | Shield: {3} | Droid Power: {4}\n", MaxDamage, player1.MyShip.Hull.Health,
-                    player1.MyShip.Hull.MaxHealth, player1.MyShip.ShieldGenerator.Shield, player1.MyShip.Droid.RepairPower);
+                Console.WriteLine("My Ship: Possible Damage: {0} \nHp: {1}/{2} | Shield: {3} | Droid Power: {4} | Armour {5}\n", MaxDamage, player1.MyShip.Hull.Health,
+                    player1.MyShip.Hull.MaxHealth, player1.MyShip.ShieldGenerator.Shield, player1.MyShip.Droid.RepairPower , player1.MyShip.Hull.Armor);
                 Console.ForegroundColor = ConsoleColor.Cyan;
                 foreach (Player Enemy in player1.Localization.EnemyPlayer)
                 {
@@ -1341,11 +1341,17 @@ namespace Projekt
                 PrintMenu menu2 = new PrintMenu();
                 menu2._menu = ChoiceMenu;
 
-
                 menu1._menu = UpgradeMenu;
+
                 while (UpgradeMenuExitFlag)
                 {
                     Console.Clear();
+                    Console.WriteLine("\n                    | Damage +25%");
+                    Console.WriteLine("                    | Damgae +10");
+                    Console.WriteLine("                    | Weigth -20%");
+                    Console.WriteLine("                    | Weigth -5%, Damage +5%, Reliable +5%");
+                    Console.WriteLine("                    | Less damage, fire twice a time");
+                    Console.WriteLine("                    | Extran damage to enemy ship shield generator");
                     UpgradeMenuResult = menu1.MenuToPrint();
                     switch (UpgradeMenuResult)
                     {

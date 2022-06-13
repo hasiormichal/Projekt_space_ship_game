@@ -36,45 +36,84 @@ namespace Projekt
                 blackPlayerList.Add(temp);
 
             }
-            if(_listNumber >= 3)
+            if (_listNumber >= 2)
             {
                 Player temp = TempFactory.GeneratePlayer(GlobalPlanetList[7]);
-                GlobalPlanetList[7].EnemyPlayer.Add(temp); // planet have his own playr list, so we should add there blackList players
+                temp.Name = "Black List nr. 2";
+                temp.MyMoney += 75000;
+                GlobalPlanetList[7].EnemyPlayer.Add(temp);
+                blackPlayerList.Add(temp);
+
+            }
+            if (_listNumber >= 3)
+            {
+                Player temp = TempFactory.GeneratePlayer(GlobalPlanetList[7]);
+                temp.Name = "Black List nr. 3";
+                temp.MyMoney += 50000;
+                GlobalPlanetList[7].EnemyPlayer.Add(temp); 
                 blackPlayerList.Add(temp);
 
             }
             if (_listNumber >= 4)
             {
                 Player temp = TempFactory.GeneratePlayer(GlobalPlanetList[6]);
-                GlobalPlanetList[6].EnemyPlayer.Add(temp); // planet have his own playr list, so we should add there blackList players
+                temp.Name = "Black List nr. 4";
+                temp.MyMoney += 40000;
+                GlobalPlanetList[6].EnemyPlayer.Add(temp); 
                 blackPlayerList.Add(temp);
 
             }
             if (_listNumber >= 5)
             {
                 Player temp = TempFactory.GeneratePlayer(GlobalPlanetList[5]);
-                GlobalPlanetList[5].EnemyPlayer.Add(temp); // planet have his own playr list, so we should add there blackList players
+                temp.Name = "Black List nr. 5";
+                temp.MyMoney += 30000;
+                GlobalPlanetList[5].EnemyPlayer.Add(temp);
                 blackPlayerList.Add(temp);
 
             }
             if (_listNumber >= 6)
             {
                 Player temp = TempFactory.GeneratePlayer(GlobalPlanetList[4]);
-                GlobalPlanetList[4].EnemyPlayer.Add(temp); // planet have his own playr list, so we should add there blackList players
+                temp.Name = "Black List nr. 6";
+                temp.MyMoney += 20000;
+                GlobalPlanetList[4].EnemyPlayer.Add(temp);
                 blackPlayerList.Add(temp);
 
             }
             if (_listNumber >= 7)
             {
-                Player temp = TempFactory.GeneratePlayer(GlobalPlanetList[3]);
-                GlobalPlanetList[3].EnemyPlayer.Add(temp); // planet have his own playr list, so we should add there blackList players
+                Player temp = TempFactory.GeneratePlayer(GlobalPlanetList[4]);
+                temp.Name = "Black List nr. 7";
+                temp.MyMoney += 12500;
+                GlobalPlanetList[4].EnemyPlayer.Add(temp); 
                 blackPlayerList.Add(temp);
 
             }
             if (_listNumber >= 8)
             {
-                Player temp = TempFactory.GeneratePlayer(GlobalPlanetList[4]);
-                GlobalPlanetList[4].EnemyPlayer.Add(temp); // planet have his own playr list, so we should add there blackList players
+                Player temp = TempFactory.GeneratePlayer(GlobalPlanetList[3]);
+                temp.Name = "Black List nr. 8";
+                temp.MyMoney += 7500;
+                GlobalPlanetList[3].EnemyPlayer.Add(temp);
+                blackPlayerList.Add(temp);
+
+            }
+            if (_listNumber >= 8)
+            {
+                Player temp = TempFactory.GeneratePlayer(GlobalPlanetList[3]);
+                temp.Name = "Black List nr. 8";
+                temp.MyMoney += 7500;
+                GlobalPlanetList[3].EnemyPlayer.Add(temp);
+                blackPlayerList.Add(temp);
+
+            }
+            if (_listNumber >= 8)
+            {
+                Player temp = TempFactory.GeneratePlayer(GlobalPlanetList[1]);
+                temp.Name = "Black List nr. 8";
+                temp.MyMoney += 7500;
+                GlobalPlanetList[1].EnemyPlayer.Add(temp);
                 blackPlayerList.Add(temp);
 
             }

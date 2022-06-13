@@ -59,7 +59,7 @@ namespace Projekt
         }
         public override string PrintName()
         {
-            return MyWeapon.PrintName() + " Shield Destroyer Upgrade";
+            return "Shield Destroyer Upgrade "+MyWeapon.PrintName();
         }
         public override int Repair()
         {

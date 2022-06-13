@@ -8,12 +8,12 @@ namespace Projekt
 {
     internal class GeneratorConst
     {
-        public int BaseLaserProbability = 40;
-        public int BaseFragmentaryCannonProbability = 20;
-        public int BaseRocketLuncherProbability = 60;
-        public int BaseHeavyCannonProbability = 75;
-        public int BaseVortexProbability = 85;
-        public int BaseTetronikProbability = 95;
-        public int BaseAtomicVisionProbability = 100;
+        public int BaseFragmentaryCannonProbability = 25;
+        public int BaseLaserProbability = 45;
+        public int BaseRocketLuncherProbability = 55;
+        public int BaseHeavyCannonProbability = 70;
+        public int BaseVortexProbability = 80;
+        public int BaseTetronikProbability = 90;
+        public int BaseAtomicVisionProbability = 95;
     }
 }

@@ -68,7 +68,7 @@ namespace Projekt
         }
         public override string PrintName()
         {
-            return MyWeapon.PrintName() + " Weak upgrade";
+            return "Weak upgrade " +MyWeapon.PrintName();
         }
 
     }
