@@ -225,7 +225,52 @@ namespace Projekt
                         throw new ArgumentException(String.Format("Generate switch invalid state: {0} Out of range (0,8)", lvl), "Generate random player");
                 }
             }
+            for(int i=0; i < 2; i++)
+            {
+                int upgradeChance = random.Next(lvl, (int)Math.Pow(lvl, 2));
+                if (upgradeChance > 2 * lvl)
+                {
+                    int WeaponNumber = random.Next(0, WeaponList.Count);
+                    int UpgradeNumber = random.Next(0, 7);
+                    if (WeaponList[WeaponNumber].ToString() == "Projekt.RocketLauncher") continue;
+                        switch (UpgradeNumber)
+                    {
+                        case 0:
+                            WeaponList[WeaponNumber] = new ShieldDestroyer(WeaponList[WeaponNumber], WeaponList[WeaponNumber].BaseAtack,
+                            WeaponList[WeaponNumber].BaseWeigth, WeaponList[WeaponNumber].BaseHealth, WeaponList[WeaponNumber].BaseReliable
+                            , WeaponList[WeaponNumber].Cost);
+                            break;
+                        case 1:
+                            WeaponList[WeaponNumber] = new HugeDamageUpgrade(WeaponList[WeaponNumber], WeaponList[WeaponNumber].BaseAtack,
+                            WeaponList[WeaponNumber].BaseWeigth, WeaponList[WeaponNumber].BaseHealth, WeaponList[WeaponNumber].BaseReliable
+                            , WeaponList[WeaponNumber].Cost);
+                            break;
+                        case 2:
+                            WeaponList[WeaponNumber] = new DoubleShotDecorator(WeaponList[WeaponNumber], WeaponList[WeaponNumber].BaseAtack,
+                            WeaponList[WeaponNumber].BaseWeigth, WeaponList[WeaponNumber].BaseHealth, WeaponList[WeaponNumber].BaseReliable
+                            , WeaponList[WeaponNumber].Cost);
+                            break;
+                        case 3:
+                            WeaponList[WeaponNumber] = new WeakWeaponUpgrade(WeaponList[WeaponNumber], WeaponList[WeaponNumber].BaseAtack,
+                            WeaponList[WeaponNumber].BaseWeigth, WeaponList[WeaponNumber].BaseHealth, WeaponList[WeaponNumber].BaseReliable
+                            , WeaponList[WeaponNumber].Cost, 2);
+                            break;
+                        case 4:
+                            WeaponList[WeaponNumber] = new WeakWeaponUpgrade(WeaponList[WeaponNumber], WeaponList[WeaponNumber].BaseAtack,
+                            WeaponList[WeaponNumber].BaseWeigth, WeaponList[WeaponNumber].BaseHealth, WeaponList[WeaponNumber].BaseReliable
+                            , WeaponList[WeaponNumber].Cost, 3);
+                            break;
+                        default:
+                            WeaponList[WeaponNumber] = new WeakWeaponUpgrade(WeaponList[WeaponNumber], WeaponList[WeaponNumber].BaseAtack,
+                            WeaponList[WeaponNumber].BaseWeigth, WeaponList[WeaponNumber].BaseHealth, WeaponList[WeaponNumber].BaseReliable
+                            , WeaponList[WeaponNumber].Cost, 1);
+                            break;
 
+                    }
+                }
+            
+                TempShip.Weapons = WeaponList;
+            }
             return new Player("Random "+random.Next(0,9999), TempShip , random.Next((int)(1700+600*Math.Pow(lvl, 2)), (int)(2300+800 * Math.Pow(lvl, 2))),localization );
         }
     }

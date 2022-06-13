@@ -15,9 +15,9 @@ namespace Projekt
         public HugeDamageUpgrade(Weapon _Ship, int _atack, int _weigth, float _health, float _reliable, int _cost)
            : base(_Ship, _atack, _weigth, _health, _reliable, _cost)
         {
-            MyWeapon.BaseAtack += (int)(MyWeapon.BaseAtack * 0.35);
+            MyWeapon.BaseAtack += (int)(MyWeapon.BaseAtack * 0.25);
             MyWeapon.Cost = (int)(MyWeapon.Cost * 2.15);
-            BaseAtack += (int)(BaseAtack * 0.35);
+            BaseAtack += (int)(BaseAtack * 0.25);
             Cost = (int)(Cost * 2.15);
         }
         public override string Print()

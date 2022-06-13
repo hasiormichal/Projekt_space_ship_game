@@ -86,18 +86,9 @@ namespace Projekt
         {
             string result = "Atack results:\n";
             int totalDamage = 0;
-            foreach(Weapon MyWeapon in weapons)
+            if (TargetShip.Droid.BaseHealth > 0)
             {
-                MyWeapon.DamageShip(TargetShip, MyWeapon.GetAtack(TargetShip));
-                result += MyWeapon.PrintName() + " deal: " + MyWeapon.GetAtack(TargetShip) + " dmg. \n";
-                totalDamage += MyWeapon.GetAtack(TargetShip);
-
-                //rocket launcher lost 3 rocket per atack
-            }
-            
-            if(TargetShip.Droid.BaseHealth > 0)
-            {
-                if(TargetShip.hull.Health + TargetShip.droid.RepairPower >= TargetShip.hull.MaxHealth)
+                if (TargetShip.hull.Health + TargetShip.droid.RepairPower >= TargetShip.hull.MaxHealth)
                 {
                     TargetShip.hull.Health = TargetShip.hull.MaxHealth;
                 }
@@ -106,6 +97,15 @@ namespace Projekt
                     TargetShip.hull.Health += TargetShip.droid.RepairPower;
                 }
             }
+            foreach (Weapon MyWeapon in weapons)
+            {
+                MyWeapon.DamageShip(TargetShip, MyWeapon.GetAtack(TargetShip));
+                result += MyWeapon.PrintName() + " deal: " + MyWeapon.GetAtack(TargetShip) + " dmg. \n";
+                totalDamage += MyWeapon.GetAtack(TargetShip);
+
+                //rocket launcher lost 3 rocket per atack
+            }          
+
             return result + "Total Damage: "+  totalDamage;
         }
         public int GetCurrentWeigth()

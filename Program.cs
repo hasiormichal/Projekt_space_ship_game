@@ -97,7 +97,15 @@ namespace Projekt
                 while (ExitFlag)
                 {
                     Console.Clear();
-                    Console.WriteLine("\n\n\n\n\n\n\n\n\n\n               | Cost: " + (int)(1000 + Math.Pow(Me.Localization.PlanetLvl, 2) * 1500));
+                    if(Me.Localization.PlanetLvl >=5)
+                    {
+                        Console.WriteLine("\n\n\n\n\n\n\n\n\n\n               | Max lvl");
+                    }
+                    else
+                    {
+                        Console.WriteLine("\n\n\n\n\n\n\n\n\n\n               | Cost: " + (int)(1000 + Math.Pow(Me.Localization.PlanetLvl, 2) * 1500));
+
+                    }
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine("\nMy money: " + Me.MyMoney + "$");
                     Console.ForegroundColor = ConsoleColor.Yellow;
@@ -182,6 +190,15 @@ namespace Projekt
                                 SaveScore(Score, "F:/Git Programy/c#/Projekt/Projekt/score.txt");
                                 ExitFlag = false;
                             }
+                            if(FinalBlackList.blackPlayerList[0].MyShip.Hull.Health == 0)
+                            {
+                                Console.Clear();
+                                Console.WriteLine("You Win!!! \n Score: {0}", Me.Score);
+                                //Score.Add(Me.Name, Me.Score);
+                                Score.Add(Me.Name + " " + Me.Score);
+                                SaveScore(Score, "F:/Git Programy/c#/Projekt/Projekt/score.txt");
+                                ExitFlag = false;
+                            }
                             break;
                         case "exit":
                             Console.Clear();
@@ -198,6 +215,10 @@ namespace Projekt
                             menuFunctions.MenuUpgradeWeapon(Me);
                             break;
                         case "upgrade planet":
+                            if(Me.Localization.PlanetLvl >= 5)
+                            {
+                                break;
+                            }
                             Console.Clear();
                             string[] ChoiceMenu = { "Exit","upgrage" };
                             string ChoiceResult;

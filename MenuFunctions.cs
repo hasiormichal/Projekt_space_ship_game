@@ -955,7 +955,7 @@ namespace Projekt
                 }
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine("My Ship: Max Damage: {0} \nHp: {1}/{2} | Shield: {3} | Droid Power: {4}\n", MaxDamage, player1.MyShip.Hull.Health,
-                    MaxDamage, player1.MyShip.Hull.MaxHealth, MaxDamage, player1.MyShip.ShieldGenerator.Shield, MaxDamage, player1.MyShip.Droid.RepairPower);
+                    player1.MyShip.Hull.MaxHealth, player1.MyShip.ShieldGenerator.Shield, player1.MyShip.Droid.RepairPower);
                 Console.ForegroundColor = ConsoleColor.Cyan;
                 foreach (Player Enemy in player1.Localization.EnemyPlayer)
                 {
@@ -973,7 +973,7 @@ namespace Projekt
                         + " | " + "Shield Generator: " + Enemy.MyShip.ShieldGenerator.Shield + " | " + "Armour: " + Enemy.MyShip.Hull.Armor);
                     foreach (Weapon EnemyWeapon in Enemy.MyShip.Weapons)
                     {
-                        Console.WriteLine(EnemyWeapon.GetType() + " Atack: " + EnemyWeapon.BaseAtack);
+                        Console.WriteLine(EnemyWeapon.PrintName() + " Atack: " + EnemyWeapon.BaseAtack);
                     }
                     i++;
                     Console.WriteLine("\n");
@@ -1315,7 +1315,8 @@ namespace Projekt
         }
         private void UpgradeWeapon(Player player, int weaponNumber)
         {
-            if (player.MyShip.Weapons[weaponNumber].ToString() == "Projekt.WeakWeaponUpgrade" || player.MyShip.Weapons[weaponNumber].ToString() == "Projekt.HugeDamageUpgrade")
+            if (player.MyShip.Weapons[weaponNumber].ToString() == "Projekt.WeakWeaponUpgrade" || player.MyShip.Weapons[weaponNumber].ToString() == "Projekt.HugeDamageUpgrade" ||
+                player.MyShip.Weapons[weaponNumber].ToString() == "Projekt.DoubleShotDecorator" || player.MyShip.Weapons[weaponNumber].ToString() == "Projekt.ShieldDestroyer")
             {
                 Console.WriteLine(player.MyShip.Weapons[weaponNumber].Print() + " !!! have alleady upgrade !!! ");
                 Console.ReadKey();
@@ -1330,7 +1331,7 @@ namespace Projekt
             else
             {
                 string[] UpgradeMenu = { "exit","Huge Damage", "Damage",
-                "Weigth","universal"};
+                "Weigth","universal" , "Double shot" , "Shield Destroyer"};
                 bool UpgradeMenuExitFlag = true;
                 string UpgradeMenuResult;
                 PrintMenu menu1 = new PrintMenu();
@@ -1350,6 +1351,54 @@ namespace Projekt
                     {
                         case "exit":
                             UpgradeMenuExitFlag = false;
+                            break;
+                        case "Shield Destroyer":
+                            Console.Clear();
+                            Console.WriteLine("\n\n\n Upgrade cost: " + (int)(player.MyShip.Weapons[weaponNumber].Cost * 2.5) + "$");
+                            ChoiceResult = menu2.MenuToPrint();
+                            switch (ChoiceResult)
+                            {
+                                case "Exit":
+                                    break;
+                                case "Buy upgrade":
+                                    if (player.MyMoney - (int)(player.MyShip.Weapons[weaponNumber].Cost * 2.5) < 0)
+                                    {
+                                        Console.WriteLine("Not Enougth Money");
+                                    }
+                                    else
+                                    {
+                                        player.MyMoney -= (int)(player.MyShip.Weapons[weaponNumber].Cost * 2.5);
+                                        player.MyShip.Weapons[weaponNumber] = new ShieldDestroyer(player.MyShip.Weapons[weaponNumber], player.MyShip.Weapons[weaponNumber].BaseAtack,
+                                            player.MyShip.Weapons[weaponNumber].BaseWeigth, player.MyShip.Weapons[weaponNumber].BaseHealth, player.MyShip.Weapons[weaponNumber].BaseReliable
+                                            , player.MyShip.Weapons[weaponNumber].Cost);
+                                    }
+                                    UpgradeMenuExitFlag = false;
+                                    break;
+                            }
+                            break;
+                        case "Double shot":
+                            Console.Clear();
+                            Console.WriteLine("\n\n\n Upgrade cost: " + (int)(player.MyShip.Weapons[weaponNumber].Cost * 2.00) + "$");
+                            ChoiceResult = menu2.MenuToPrint();
+                            switch (ChoiceResult)
+                            {
+                                case "Exit":
+                                    break;
+                                case "Buy upgrade":
+                                    if (player.MyMoney - (int)(player.MyShip.Weapons[weaponNumber].Cost * 2.00) < 0)
+                                    {
+                                        Console.WriteLine("Not Enougth Money");
+                                    }
+                                    else
+                                    {
+                                        player.MyMoney -= (int)(player.MyShip.Weapons[weaponNumber].Cost * 2.00);
+                                        player.MyShip.Weapons[weaponNumber] = new DoubleShotDecorator(player.MyShip.Weapons[weaponNumber], player.MyShip.Weapons[weaponNumber].BaseAtack,
+                                            player.MyShip.Weapons[weaponNumber].BaseWeigth, player.MyShip.Weapons[weaponNumber].BaseHealth, player.MyShip.Weapons[weaponNumber].BaseReliable
+                                            , player.MyShip.Weapons[weaponNumber].Cost);
+                                    }
+                                    UpgradeMenuExitFlag = false;
+                                    break;
+                            }
                             break;
                         case "Huge Damage":
                             Console.Clear();

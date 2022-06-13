@@ -9,8 +9,8 @@ namespace Projekt
     internal class WeakWeaponUpgrade : WeaponsDecorator
     {
         // Weak upgrade
-        //  decision 1 -> Damage +15%
-        //  decision 2 -> Weigth -15%
+        //  decision 1 -> Damage +10%
+        //  decision 2 -> Weigth -20%
         //  decision 3 -> damage +5 , Weigth -5% , reliable + 10%;
 
         //Upgrade cost = 0.5*MyWeapon.Const   ==> so total cost is 1.5*MyWeapon.Const
@@ -20,16 +20,16 @@ namespace Projekt
             switch (decision)
             {
                 case 1:
-                    MyWeapon.BaseAtack += (int)(MyWeapon.BaseAtack*0.15);
+                    MyWeapon.BaseAtack += (int)(MyWeapon.BaseAtack*0.10);
                     MyWeapon.Cost = (int)(MyWeapon.Cost * 1.5);
-                    BaseAtack += (int)(BaseAtack * 0.15);
+                    BaseAtack += (int)(BaseAtack * 0.10);
                     Cost = (int)(Cost * 1.5);
                     break;
 
                 case 2:
-                    MyWeapon.BaseWeigth -= (int)(MyWeapon.BaseWeigth * 0.15);
+                    MyWeapon.BaseWeigth -= (int)(MyWeapon.BaseWeigth * 0.20);
                     MyWeapon.Cost = (int)(MyWeapon.Cost * 1.5);
-                    BaseWeigth -= (int)(BaseWeigth * 0.15);
+                    BaseWeigth -= (int)(BaseWeigth * 0.20);
                     Cost = (int)(Cost * 1.5);
                     break;
 

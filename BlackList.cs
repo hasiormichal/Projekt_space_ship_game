@@ -9,7 +9,7 @@ namespace Projekt
     internal class BlackList
     {
         private int listNumber;
-        private List<Player> blackPlayerList;
+        public List<Player> blackPlayerList;
 
 
         public BlackList (int _listNumber, List<Planet> GlobalPlanetList)
@@ -20,7 +20,7 @@ namespace Projekt
             if (_listNumber >= 1)
             {
                 
-                Player temp = new Player("Black List nr. 1", new Ship(new Hull(15, 1300, 1000, 5, 100000), new List<Weapon>()
+                Player temp = new Player("Black List nr. 1", new Ship(new Hull(15, 1300, 1000, 5, 500000), new List<Weapon>()
                     {
                     new AtomicVision(100,100,100,(float)0.99,50000,(float)2),
                     new AtomicVision(100,100,100,(float)0.99,50000,(float)2),
